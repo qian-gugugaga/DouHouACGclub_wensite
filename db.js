@@ -2,39 +2,17 @@ const bcrypt = require('bcryptjs');
 const path = require('path');
 const fs = require('fs');
 
-let db;
+const { createClient } = require('@libsql/client');
 
-if (process.env.TURSO_URL) {
-  // Turso cloud mode
-  const { createClient } = require('@libsql/client');
-  db = createClient({
-    url: process.env.TURSO_URL,
-    authToken: process.env.TURSO_TOKEN || ''
-  });
-  console.log('Using Turso cloud database');
-} else {
-  // Local SQLite mode
-  const Database = require('better-sqlite3');
-  const dataDir = path.join(__dirname, 'data');
-  if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir, { recursive: true });
-  const localDb = new Database(path.join(dataDir, 'dfdm.db'));
-  localDb.pragma('journal_mode = WAL');
-  localDb.pragma('foreign_keys = ON');
-  // Wrap better-sqlite3 to same API as libsql
-  db = {
-    execute: async (sql, params) => {
-      const stmt = localDb.prepare(sql);
-      if (sql.trim().toUpperCase().startsWith('SELECT')) {
-        const rows = params ? stmt.all(...(Array.isArray(params) ? params : [params])) : stmt.all();
-        return { rows };
-      } else {
-        const result = params ? stmt.run(...(Array.isArray(params) ? params : [params])) : stmt.run();
-        return { rows: [], lastInsertRowid: result.lastInsertRowid, changes: result.changes };
-      }
-    }
-  };
-  console.log('Using local SQLite database');
-}
+const dataDir = path.join(__dirname, 'data');
+if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir, { recursive: true });
+
+const db = createClient({
+  url: process.env.TURSO_URL || 'file:' + path.join(dataDir, 'dfdm.db'),
+  authToken: process.env.TURSO_TOKEN || ''
+});
+
+console.log(process.env.TURSO_URL ? 'Using Turso cloud database' : 'Using local SQLite database');
 
 async function initDB() {
   const tables = [
