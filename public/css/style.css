@@ -2143,6 +2143,12 @@ img.lazy.loaded {
 .badge-custom { background: #e3f2fd; color: #1565c0; }
 .badge-leader { background: #fff9c4; color: #f57f17; }
 
+.member-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 12px;
+}
+
 /* --- Fortune Widget --- */
 .fortune-widget {
   display: inline-flex;

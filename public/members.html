@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>成员展示 · 东方动漫社</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="images/logo.jpg">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      <img src="images/logo.jpg" alt="东方动漫社" class="logo-img">
+      东方动漫社
+    </a>
+    <nav class="nav-links">
+      <a href="index.html">首页</a>
+      <a href="activities.html">活动合集</a>
+      <a href="market.html">动漫集市</a>
+      <a href="monthly.html">社团月刊</a>
+      <a href="fanworks.html">创作广场</a>
+      <a href="guestbook.html">留言板</a>
+      <a href="members.html" class="active">成员展示</a>
+    </nav>
+    <span class="header-slogan">我从南极来，最喜欢持石</span>
+    <div class="header-auth" id="headerAuth"></div>
+    <div class="social-links">
+      <a href="https://space.bilibili.com/322448790" target="_blank" title="B站" aria-label="Bilibili">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.813 4.653h.854c1.51.054 2.769.578 3.773 1.574 1.004.995 1.524 2.249 1.56 3.76v7.36c-.036 1.51-.556 2.769-1.56 3.773s-2.262 1.524-3.773 1.56H5.333c-1.51-.036-2.769-.556-3.773-1.56S.036 18.858 0 17.347v-7.36c.036-1.511.556-2.765 1.56-3.76 1.004-.996 2.262-1.52 3.773-1.574h.774l-1.174-1.12a1.234 1.234 0 0 1-.373-.906c0-.356.124-.658.373-.907l.027-.027c.267-.249.573-.373.92-.373.347 0 .653.124.92.373L9.653 4.44c.071.071.134.142.187.213h4.267a.836.836 0 0 1 .16-.213l2.853-2.747c.267-.249.573-.373.92-.373.347 0 .662.151.929.4.267.249.391.551.391.907 0 .355-.124.657-.373.906l-1.174 1.12zM5.333 7.24c-.746.018-1.373.276-1.88.773-.506.498-.769 1.13-.786 1.894v7.52c.017.764.28 1.395.786 1.893.507.498 1.134.756 1.88.773h13.334c.746-.017 1.373-.275 1.88-.773.506-.498.769-1.129.786-1.893v-7.52c-.017-.765-.28-1.396-.786-1.894-.507-.497-1.134-.755-1.88-.773H5.333zM8 11.107c.356 0 .658.124.907.373l.08.08c.231.267.346.56.346.88v3.2c0 .356-.115.658-.347.907-.249.249-.551.373-.906.373-.356 0-.658-.124-.907-.373l-.08-.08c-.231-.267-.347-.56-.347-.88v-3.2c0-.356.116-.658.347-.907.249-.249.551-.373.907-.373zm8 0c.356 0 .658.124.907.373l.08.08c.231.267.347.56.347.88v3.2c0 .356-.116.658-.347.907-.249.249-.551.373-.907.373-.356 0-.658-.124-.907-.373l-.08-.08c-.231-.267-.347-.56-.347-.88v-3.2c0-.356.116-.658.347-.907.249-.249.551-.373.907-.373z"/></svg>
+      </a>
+      <a href="#" title="QQ群" aria-label="QQ Group">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M21.395 15.035a39.548 39.548 0 0 0-.803-2.264l-1.079-2.695c.001-.032.014-.562.014-.836C19.527 4.661 17.335 2.418 12 2.418s-7.527 2.243-7.527 6.822c0 .274.013.804.014.836l-1.08 2.695a38.97 38.97 0 0 0-.802 2.264c-1.021 3.283-1.045 4.17-.065 4.547 1.635.628 3.986-.504 5.277-1.064 1.806.45 3.871.563 6.183.563 2.312 0 4.377-.113 6.183-.563 1.291.56 3.642 1.692 5.277 1.064.98-.377.956-1.264-.065-4.547z"/></svg>
+      </a>
+    </div>
+    <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="菜单">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+
+<nav class="mobile-nav" id="mobileNav">
+  <a href="index.html">首页</a>
+  <a href="activities.html">活动合集</a>
+  <a href="market.html">动漫集市</a>
+  <a href="monthly.html">社团月刊</a>
+  <a href="fanworks.html">创作广场</a>
+  <a href="guestbook.html">留言板</a>
+  <a href="members.html">成员展示</a>
+</nav>
+
+<div class="page-wrapper full-width">
+  <main class="main-content">
+
+    <div class="page-header">
+      <div class="breadcrumb"><a href="index.html">首页</a><span>/</span>成员展示</div>
+      <h1>成员展示</h1>
+      <p style="color:var(--text-muted);font-size:13px;">东方动漫社的伙伴们</p>
+    </div>
+
+    <div class="stats-grid" style="margin-bottom:20px;">
+      <div class="stat-item"><div class="num" id="totalMembers">--</div><div class="label">社员总数</div></div>
+      <div class="stat-item"><div class="num" id="adminCount">--</div><div class="label">管理员</div></div>
+    </div>
+
+    <div class="member-grid" id="memberGrid">
+      <p style="text-align:center;padding:24px;color:var(--text-muted);">加载中...</p>
+    </div>
+
+  </main>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-stats">
+      <span>今日 PV：<strong id="todayPV">--</strong></span>
+      <span>今日 UV：<strong id="todayUV">--</strong></span>
+      <span>总访问量：<strong id="totalVisits">--</strong></span>
+    </div>
+    <p>&copy; 2026 东方动漫社 · 神秘据点 | Powered by Love &amp; ACG</p>
+  </div>
+</footer>
+
+<button class="back-to-top" id="backToTop" aria-label="回到顶部">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m18 15-6-6-6 6"/></svg>
+</button>
+
+<script src="js/main.js"></script>
+<script>
+var avatarColors = ['#fce4ec,#e8eaf6', '#e8f5e9,#fff3e0', '#e3f2fd,#f3e5f5', '#fff3e0,#fce4ec', '#f3e5f5,#e8eaf6', '#e0f7fa,#fff9c4'];
+
+API.get('/api/auth/users').then(function(data) {
+  var users = data.users || [];
+  document.getElementById('totalMembers').textContent = users.length;
+  document.getElementById('adminCount').textContent = users.filter(function(u) { return u.role === 'admin'; }).length;
+
+  var grid = document.getElementById('memberGrid');
+  if (!users.length) {
+    grid.innerHTML = '<p style="text-align:center;padding:24px;color:var(--text-muted);">暂无成员~</p>';
+    return;
+  }
+  grid.innerHTML = users.map(function(u) {
+    var av = 'background:linear-gradient(135deg,' + avatarColors[(u.id || 0) % avatarColors.length] + ');';
+    var avatarHTML = u.avatar
+      ? '<img src="' + u.avatar + '" style="width:56px;height:56px;border-radius:50%;object-fit:cover;">'
+      : '<div style="width:56px;height:56px;border-radius:50%;' + av + 'display:flex;align-items:center;justify-content:center;font-size:22px;color:#fff;font-weight:700;">' + (u.username || '?').charAt(0).toUpperCase() + '</div>';
+    var badge = '';
+    if (u.role === 'admin') badge = '<span class="user-badge" style="background:#fff9c4;color:#f57f17;">管理员</span>';
+    else if (u.title) badge = '<span class="user-badge badge-custom">' + escapeHTML(u.title) + '</span>';
+    else badge = '<span class="user-badge badge-member">东方社员</span>';
+    return '<a href="profile.html?id=' + u.id + '" style="background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:20px;text-align:center;text-decoration:none;color:inherit;transition:all 0.2s;" onmouseenter="this.style.boxShadow=\'0 4px 16px rgba(0,0,0,0.08)\';this.style.transform=\'translateY(-2px)\'" onmouseleave="this.style.boxShadow=\'none\';this.style.transform=\'\'">' +
+      '<div style="display:flex;justify-content:center;margin-bottom:8px;">' + avatarHTML + '</div>' +
+      '<div style="font-weight:600;font-size:14px;margin-bottom:4px;">' + escapeHTML(u.username) + '</div>' +
+      badge +
+      '<div style="font-size:11px;color:var(--text-muted);margin-top:4px;">' + u.created_at.substring(0, 10) + ' 加入</div>' +
+      '</a>';
+  }).join('');
+}).catch(function() {
+  document.getElementById('memberGrid').innerHTML = '<p style="text-align:center;padding:24px;color:#c62828;">加载失败</p>';
+});
+
+function escapeHTML(str) {
+  var d = document.createElement('div');
+  d.textContent = str || '';
+  return d.innerHTML;
+}
+</script>
+</body>
+</html>

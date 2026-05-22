@@ -80,6 +80,13 @@ router.put('/security/phone', authRequired, async (req, res) => {
 });
 
 // Admin: search users
+// Admin only: list all members
+router.get('/users', authRequired, async (req, res) => {
+  if (req.user.role !== 'admin') return res.status(403).json({ error: '仅管理员可查看' });
+  const users = (await db.execute('SELECT id, username, role, avatar, title, created_at FROM users ORDER BY id ASC')).rows;
+  res.json({ users });
+});
+
 router.get('/users/search', authRequired, async (req, res) => {
   if (req.user.role !== 'admin') return res.status(403).json({ error: '需要管理员权限' });
   const { q } = req.query;
