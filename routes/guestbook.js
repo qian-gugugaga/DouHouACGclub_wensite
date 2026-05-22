@@ -113,6 +113,17 @@ router.post('/:id/like', authRequired, async (req, res) => {
       'INSERT INTO post_likes (user_id, post_id) VALUES ($1, $2)',
       [req.user.id, postId]
     );
+    // Notify post author (skip self-likes)
+    const post = (await query(
+      'SELECT author_id, title FROM guestbook_messages WHERE id = $1', [postId]
+    )).rows[0];
+    if (post && post.author_id !== req.user.id) {
+      const title = (post.title || '').substring(0, 20);
+      await query(
+        "INSERT INTO notifications (user_id, type, content, related_id) VALUES ($1, 'like', $2, $3)",
+        [post.author_id, req.user.username + ' 赞了你的帖子「' + title + '」', postId]
+      );
+    }
   }
 
   const countRow = (await query(

@@ -63,15 +63,16 @@ function renderNotifyDropdown() {
     } else {
       list.innerHTML = notifs.map(function(n) {
         var link = '';
-        if (n.type === 'reply') link = '/guestbook.html?thread=' + n.related_id;
+        if (n.type === 'reply' || n.type === 'like') link = '/guestbook.html?thread=' + n.related_id;
         else if (n.type === 'comment' || n.type === 'comment_reply') {
           if (n.content.indexOf('创作') > -1) link = '/fanworks.html?id=' + n.related_id;
           else if (n.content.indexOf('集市') > -1) link = '/market.html?id=' + n.related_id;
         } else if (n.type === 'approve' && n.content.indexOf('创作') > -1) link = '/fanworks.html?id=' + n.related_id;
         else if (n.type === 'approve' && n.content.indexOf('集市') > -1) link = '/market.html?id=' + n.related_id;
+        var icon = n.type === 'like' ? '<svg width="12" height="12" viewBox="0 0 24 24" fill="#fb7299" stroke="#fb7299" stroke-width="2" style="margin-right:4px;vertical-align:middle;"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>' : '';
         return '<div class="notify-item' + (n.read ? '' : ' unread') + '" data-id="' + n.id + '"' +
           (link ? ' style="cursor:pointer;" data-link="' + link + '"' : '') + '>' +
-          escapeHTML(n.content) + '<br><span style="font-size:11px;color:#999;">' + n.created_at + '</span></div>';
+          icon + escapeHTML(n.content) + '<br><span style="font-size:11px;color:#999;">' + n.created_at + '</span></div>';
       }).join('');
       list.querySelectorAll('.notify-item').forEach(function(item) {
         item.addEventListener('click', function() {
