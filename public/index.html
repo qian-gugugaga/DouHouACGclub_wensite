@@ -204,23 +204,8 @@
 
     <div class="sidebar-widget">
       <h3>社团公告</h3>
-      <ul class="announcement-list">
-        <li>
-          <time>2026-05-18</time>
-          夏日祭活动报名通道已开启，名额有限，速来！
-        </li>
-        <li>
-          <time>2026-05-12</time>
-          社团服务器升级完成，网站访问速度提升~
-        </li>
-        <li>
-          <time>2026-05-01</time>
-          五月招新开始，欢迎各位新朋友加入！
-        </li>
-        <li>
-          <time>2026-04-28</time>
-          创作广场新增 Cosplay 分类，欢迎投稿。
-        </li>
+      <ul class="announcement-list" id="announceList">
+        <li style="color:var(--text-muted);">加载中...</li>
       </ul>
     </div>
 
@@ -366,6 +351,18 @@
     widget.title = '今日运势已揭晓，明天再来~';
   }
 })();
+
+// Load announcements
+fetch('/api/announcements').then(function(r) { return r.json(); }).then(function(data) {
+  var list = document.getElementById('announceList');
+  if (!list) return;
+  if (!data.length) { list.innerHTML = '<li style="color:var(--text-muted);">暂无公告~</li>'; return; }
+  list.innerHTML = data.map(function(a) {
+    return '<li><time>' + a.created_at.substring(0, 10) + '</time>' + escapeHTML(a.content) + '</li>';
+  }).join('');
+}).catch(function() {
+  document.getElementById('announceList').innerHTML = '<li style="color:var(--text-muted);">加载失败</li>';
+});
 </script>
 </body>
 </html>

@@ -129,6 +129,15 @@ db.exec(`
   );
 `);
 
+// Announcements table
+db.exec(`
+  CREATE TABLE IF NOT EXISTS announcements (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    content TEXT NOT NULL,
+    created_at TEXT DEFAULT (datetime('now','localtime'))
+  );
+`);
+
 // Migration: add cn to monthly_issues
 try { db.exec('ALTER TABLE monthly_issues ADD COLUMN cn TEXT DEFAULT \'\''); } catch(e) {}
 // Migration: add cn to activities

@@ -23,6 +23,7 @@ app.use('/api/market', require('./routes/market'));
 app.use('/api/guestbook', require('./routes/guestbook'));
 app.use('/api/notifications', require('./routes/notifications'));
 app.use('/api/activities', require('./routes/activities'));
+app.use('/api/announcements', require('./routes/announcements'));
 app.use('/api/comments', require('./routes/comments'));
 app.use('/api/upload', require('./routes/upload'));
 

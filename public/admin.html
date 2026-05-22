@@ -41,6 +41,7 @@
     <button class="admin-tab" data-tab="reviewPanel">✅ 创作审核</button>
     <button class="admin-tab" data-tab="marketReviewPanel">🏪 集市审核</button>
     <button class="admin-tab" data-tab="activityPanel">📅 活动管理</button>
+    <button class="admin-tab" data-tab="announcementPanel">📢 公告管理</button>
     <button class="admin-tab" data-tab="userSearchPanel">🔍 用户查询</button>
   </div>
 
@@ -151,6 +152,23 @@
     <h3 style="margin-top:32px;">已有活动（<span id="activityCount">0</span>）</h3>
     <div id="activityList" style="margin-top:12px;">
       <div class="review-empty">暂无活动~</div>
+    </div>
+  </div>
+
+  <!-- Announcement Panel -->
+  <div class="admin-panel" id="announcementPanel">
+    <h3>发布公告</h3>
+    <div class="form-group">
+      <label>公告内容</label>
+      <textarea id="announceContent" placeholder="输入公告内容..." style="min-height:80px;width:100%;padding:12px;border:1px solid var(--border);border-radius:8px;font-size:14px;font-family:var(--font-sans);resize:vertical;outline:none;"></textarea>
+    </div>
+    <button class="publish-btn" id="publishAnnounceBtn">发布公告</button>
+    <button class="btn btn-outline" id="cancelAnnounceEdit" style="display:none;margin-left:8px;font-size:13px;">取消编辑</button>
+    <div class="admin-msg" id="announceMsg"></div>
+
+    <h3 style="margin-top:32px;">已有公告（<span id="announceCount">0</span>）</h3>
+    <div id="announceList" style="margin-top:12px;">
+      <div class="review-empty">暂无公告~</div>
     </div>
   </div>
 
@@ -612,6 +630,84 @@ window.deleteActivity = function(id) {
   if (!confirm('确定删除该活动？')) return;
   API.del('/api/activities/' + id).then(function() { renderActivityList(); });
 };
+
+// ---- Announcement Management ----
+var announceBtn = document.getElementById('publishAnnounceBtn');
+var announceMsg = document.getElementById('announceMsg');
+var cancelAnnounceBtn = document.getElementById('cancelAnnounceEdit');
+
+function clearAnnounceForm() {
+  document.getElementById('announceContent').value = '';
+  delete announceBtn._editingId;
+  announceBtn.textContent = '发布公告';
+  cancelAnnounceBtn.style.display = 'none';
+}
+
+cancelAnnounceBtn.addEventListener('click', clearAnnounceForm);
+
+announceBtn.addEventListener('click', function() {
+  var content = document.getElementById('announceContent').value.trim();
+  if (!content) { showMsg(announceMsg, 'error', '请输入公告内容'); return; }
+  var self = this; self.disabled = true;
+  var isEdit = !!self._editingId;
+  if (isEdit) {
+    self.textContent = '更新中...';
+    API.put('/api/announcements/' + self._editingId, { content: content }).then(function(d) {
+      if (d.error) { showMsg(announceMsg, 'error', d.error); self.disabled = false; self.textContent = '更新公告'; return; }
+      clearAnnounceForm();
+      showMsg(announceMsg, 'success', '公告更新成功！');
+      self.disabled = false; self.textContent = '发布公告';
+      renderAnnounceList();
+    });
+  } else {
+    self.textContent = '发布中...';
+    API.post('/api/announcements', { content: content }).then(function(d) {
+      if (d.error) { showMsg(announceMsg, 'error', d.error); self.disabled = false; self.textContent = '发布公告'; return; }
+      clearAnnounceForm();
+      showMsg(announceMsg, 'success', '公告发布成功！');
+      self.disabled = false; self.textContent = '发布公告';
+      renderAnnounceList();
+    });
+  }
+});
+
+function renderAnnounceList() {
+  API.get('/api/announcements').then(function(data) {
+    var list = document.getElementById('announceList');
+    document.getElementById('announceCount').textContent = data.length;
+    if (!data.length) { list.innerHTML = '<div class="review-empty">暂无公告~</div>'; return; }
+    list.innerHTML = data.map(function(a) {
+      return '<div class="review-item"><div class="review-info" style="flex:1;">' +
+        '<div class="review-text">' + escapeHTML(a.content) + '</div>' +
+        '<div style="font-size:11px;color:var(--text-muted);">' + a.created_at + '</div>' +
+        '<div style="display:flex;gap:6px;margin-top:4px;">' +
+        '<button class="btn-approve" style="font-size:11px;padding:3px 10px;" onclick="editAnnounce(' + a.id + ')">编辑</button>' +
+        '<button class="btn-reject" style="font-size:11px;padding:3px 10px;" onclick="deleteAnnounce(' + a.id + ')">删除</button>' +
+        '</div></div></div>';
+    }).join('');
+  });
+}
+
+window.editAnnounce = function(id) {
+  API.get('/api/announcements').then(function(data) {
+    var a = data.find(function(x) { return x.id === id; });
+    if (!a) return;
+    document.getElementById('announceContent').value = a.content;
+    announceBtn.textContent = '更新公告';
+    announceBtn._editingId = id;
+    cancelAnnounceBtn.style.display = 'inline-block';
+    document.querySelector('.admin-tab[data-tab="announcementPanel"]').click();
+    document.getElementById('announceContent').scrollIntoView({ behavior: 'smooth' });
+  });
+};
+
+window.deleteAnnounce = function(id) {
+  if (!confirm('确定删除该公告？')) return;
+  API.del('/api/announcements/' + id).then(function() { renderAnnounceList(); });
+};
+
+document.querySelector('.admin-tab[data-tab="announcementPanel"]').addEventListener('click', renderAnnounceList);
+renderAnnounceList();
 
 function escapeHTML(str) {
   const div = document.createElement('div');
