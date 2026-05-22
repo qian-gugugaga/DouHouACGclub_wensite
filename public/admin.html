@@ -491,7 +491,6 @@ window.rejectMarketItem = function(id) { API.put('/api/market/' + id + '/reject'
 // ---- User Search ----
 document.getElementById('btnUserSearch').addEventListener('click', function() {
   var q = document.getElementById('userSearchInput').value.trim();
-  if (!q) return;
   API.get('/api/auth/users/search?q=' + encodeURIComponent(q)).then(function(data) {
     var users = data.users || [];
     var container = document.getElementById('userSearchResults');
