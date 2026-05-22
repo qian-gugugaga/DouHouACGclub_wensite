@@ -42,7 +42,7 @@
     <button class="admin-tab" data-tab="marketReviewPanel">🏪 集市审核</button>
     <button class="admin-tab" data-tab="activityPanel">📅 活动管理</button>
     <button class="admin-tab" data-tab="announcementPanel">📢 公告管理</button>
-    <button class="admin-tab" data-tab="userSearchPanel">🔍 用户查询</button>
+    <button class="admin-tab" data-tab="memberListPanel">👥 成员列表</button>
   </div>
 
   <!-- Monthly Publish Panel -->
@@ -172,14 +172,12 @@
     </div>
   </div>
 
-  <!-- User Search Panel -->
-  <div class="admin-panel" id="userSearchPanel">
-    <h3>用户查询</h3>
-    <div style="display:flex;gap:8px;margin-bottom:16px;">
-      <input type="text" id="userSearchInput" placeholder="输入用户名搜索..." style="flex:1;padding:8px 12px;border:1px solid var(--border);border-radius:8px;font-size:14px;outline:none;">
-      <button class="btn btn-primary" id="btnUserSearch" style="font-size:13px;">搜索</button>
+  <!-- Member List Panel -->
+  <div class="admin-panel" id="memberListPanel">
+    <h3>全部成员（<span id="memberCount">--</span>）</h3>
+    <div id="memberList" style="margin-top:12px;">
+      <p style="text-align:center;padding:20px;color:var(--text-muted);">加载中...</p>
     </div>
-    <div id="userSearchResults"></div>
   </div>
 </div>
 
@@ -488,19 +486,13 @@ function renderMarketReviewList() {
 window.approveMarketItem = function(id) { API.put('/api/market/' + id + '/approve').then(renderMarketReviewList); };
 window.rejectMarketItem = function(id) { API.put('/api/market/' + id + '/reject').then(renderMarketReviewList); };
 
-// ---- User Search ----
-document.getElementById('btnUserSearch').addEventListener('click', function() {
-  var q = document.getElementById('userSearchInput').value.trim();
-  var url = '/api/auth/users/search?q=' + encodeURIComponent(q);
-  document.getElementById('userSearchResults').innerHTML = '<p style="text-align:center;padding:20px;color:var(--text-muted);">搜索中...</p>';
-  API.get(url).then(function(data) {
+// ---- Member List ----
+function renderMemberList() {
+  API.get('/api/auth/users').then(function(data) {
     var users = data.users || [];
-    var container = document.getElementById('userSearchResults');
-    if (!data || data.error) { container.innerHTML = '<p style="color:#c62828;">' + escapeHTML(data && data.error || '未知错误') + '</p>'; return; }
-    if (users.length === 0) {
-      container.innerHTML = '<p style="text-align:center;padding:20px;color:var(--text-muted);">未找到用户（共加载 ' + (data.users ? data.users.length : 0) + ' 条）</p>';
-      return;
-    }
+    var container = document.getElementById('memberList');
+    document.getElementById('memberCount').textContent = users.length;
+    if (!users.length) { container.innerHTML = '<p style="text-align:center;padding:20px;color:var(--text-muted);">暂无成员</p>'; return; }
     container.innerHTML = users.map(function(u) {
       var badge = '';
       if (u.title) { badge = '<span class="user-badge ' + (u.title==='社长'?'badge-leader':'badge-custom') + '">' + escapeHTML(u.title) + '</span>'; }
@@ -509,8 +501,7 @@ document.getElementById('btnUserSearch').addEventListener('click', function() {
         '<strong>' + escapeHTML(u.username) + '</strong> ' + badge +
         '<span style="font-size:11px;color:var(--text-muted);">(' + (u.role === 'admin' ? '管理员' : '社员') + ')</span>' +
         '<div style="font-size:12px;color:var(--text-light);margin-top:4px;">' +
-        'ID: ' + u.id + ' | QQ: ' + escapeHTML(u.qq || '未填写') + ' | 手机: ' + escapeHTML(u.phone || '未填写') +
-        ' | 注册: ' + u.created_at + '</div>' +
+        'ID: ' + u.id + ' | 注册: ' + u.created_at + '</div>' +
         '<div style="display:flex;gap:6px;align-items:center;margin-top:8px;">' +
         '<input type="text" class="title-input" data-uid="' + u.id + '" value="' + escapeHTML(u.title || '') + '" placeholder="设置称号（空=东方社员，填"社长"=黄色）" style="flex:1;padding:5px 8px;border:1px solid var(--border);border-radius:4px;font-size:12px;outline:none;">' +
         '<button class="btn btn-sm btn-primary btn-set-title" data-uid="' + u.id + '" style="font-size:11px;">设置</button>' +
@@ -519,7 +510,6 @@ document.getElementById('btnUserSearch').addEventListener('click', function() {
         '</div>';
     }).join('');
 
-    // Title set handlers
     container.querySelectorAll('.btn-set-title').forEach(function(btn) {
       btn.addEventListener('click', function() {
         var uid = this.dataset.uid;
@@ -531,19 +521,17 @@ document.getElementById('btnUserSearch').addEventListener('click', function() {
         API.put('/api/auth/users/' + uid + '/title', { title: title }).then(function(d) {
           self.disabled = false; self.textContent = '设置';
           if (d.error) { alert(d.error); return; }
-          document.getElementById('btnUserSearch').click(); // refresh
+          renderMemberList();
         });
       });
     });
+  }).catch(function() {
+    document.getElementById('memberList').innerHTML = '<p style="text-align:center;padding:20px;color:#c62828;">加载失败</p>';
   });
-}).catch(function(e) {
-  document.getElementById('userSearchResults').innerHTML = '<p style="text-align:center;padding:20px;color:#c62828;">搜索失败：' + (e.message || '网络错误') + '</p>';
-});
-});
+}
 
-document.getElementById('userSearchInput').addEventListener('keydown', function(e) {
-  if (e.key === 'Enter') document.getElementById('btnUserSearch').click();
-});
+document.querySelector('.admin-tab[data-tab="memberListPanel"]').addEventListener('click', renderMemberList);
+renderMemberList();
 
 // ---- Activity Management ----
 function renderActivityList() {
