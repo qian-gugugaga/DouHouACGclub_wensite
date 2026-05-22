@@ -12,7 +12,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 // Serve static frontend files
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Initialize database (creates tables + admin account)
+// Initialize PostgreSQL database
 const { initDB } = require('./db');
 
 // API Routes

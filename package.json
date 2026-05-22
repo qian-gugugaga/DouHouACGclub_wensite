@@ -7,9 +7,9 @@
     "start": "node server.js"
   },
   "dependencies": {
-    "@libsql/client": "^0.17.3",
     "bcryptjs": "^3.0.3",
     "express": "^5.2.1",
+    "pg": "^8.21.0",
     "uuid": "^14.0.0"
   }
 }
