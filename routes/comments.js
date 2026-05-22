@@ -21,24 +21,26 @@ router.post('/', authRequired, async (req, res) => {
   const { targetType, targetId, text, parentId } = req.body;
   if (!text || !text.trim()) return res.status(400).json({ error: '请输入评论内容' });
   if (!targetType || !targetId) return res.status(400).json({ error: '缺少目标信息' });
+  if (!['fanwork', 'market'].includes(targetType)) return res.status(400).json({ error: '无效的目标类型' });
 
   const result = await query(
     'INSERT INTO comments (target_type, target_id, author_id, text, parent_id) VALUES ($1, $2, $3, $4, $5) RETURNING id',
     [targetType, targetId, req.user.id, text.trim(), parentId || null]
   );
 
-  // Notify the target author
-  const table = targetType === 'fanwork' ? 'fanwork_submissions' : 'market_items';
+  // Notify the target author (only fanwork or market supported)
+  const targetTable = targetType === 'fanwork' ? 'fanwork_submissions' : 'market_items';
   const targetResult = await query(
-    `SELECT author_id, text, title FROM ${table} WHERE id = $1`,
+    `SELECT author_id, text, title FROM ${targetTable} WHERE id = $1`,
     [targetId]
   );
   const target = targetResult.rows[0];
   if (target && target.author_id !== req.user.id) {
     const snippet = (target.title || target.text || '').substring(0, 30);
+    const typeLabel = targetType === 'fanwork' ? '创作' : '集市物品';
     await query(
       "INSERT INTO notifications (user_id, type, content, related_id) VALUES ($1, 'comment', $2, $3)",
-      [target.author_id, req.user.username + ' 评论了你的' + (targetType === 'fanwork' ? '创作' : '集市物品') + '「' + snippet + '」', targetId]
+      [target.author_id, req.user.username + ' 评论了你的' + typeLabel + '「' + snippet + '」', targetId]
     );
   }
 

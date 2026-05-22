@@ -1,9 +1,16 @@
 const { Pool } = require('pg');
 const bcrypt = require('bcryptjs');
 
+if (!process.env.DATABASE_URL) {
+  console.error('DATABASE_URL 未设置，请在 Railway 上添加 PostgreSQL 插件或设置环境变量');
+  process.exit(1);
+}
+
+const isNeon = process.env.DATABASE_URL.includes('neon.tech');
+
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  ssl: { rejectUnauthorized: false }
+  ssl: isNeon ? { rejectUnauthorized: false } : false
 });
 
 async function query(sql, params = []) {

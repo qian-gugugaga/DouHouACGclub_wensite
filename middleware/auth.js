@@ -14,10 +14,10 @@ async function authRequired(req, res, next) {
 }
 
 async function adminRequired(req, res, next) {
-  await authRequired(req, res, async () => {
-    if (req.user.role !== 'admin') return res.status(403).json({ error: '需要管理员权限' });
-    next();
-  });
+  await authRequired(req, res, () => {});
+  if (res.headersSent) return;
+  if (req.user.role !== 'admin') return res.status(403).json({ error: '需要管理员权限' });
+  next();
 }
 
 module.exports = { authRequired, adminRequired };

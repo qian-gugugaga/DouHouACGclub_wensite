@@ -34,6 +34,12 @@ app.use((req, res) => {
   }
 });
 
+// Global error handler
+app.use((err, _req, res, _next) => {
+  console.error(err);
+  res.status(500).json({ error: '服务器内部错误' });
+});
+
 const PORT = process.env.PORT || 3000;
 initDB().then(() => {
   app.listen(PORT, () => {
