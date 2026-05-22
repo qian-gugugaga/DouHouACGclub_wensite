@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>个人主页 · 东方动漫社</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="images/logo.jpg">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      <img src="images/logo.jpg" alt="东方动漫社" class="logo-img">
+      东方动漫社
+    </a>
+    <nav class="nav-links">
+      <a href="index.html">首页</a>
+      <a href="activities.html">活动合集</a>
+      <a href="market.html">动漫集市</a>
+      <a href="monthly.html">社团月刊</a>
+      <a href="fanworks.html">创作广场</a>
+      <a href="guestbook.html">留言板</a>
+    </nav>
+    <span class="header-slogan">我从南极来，最喜欢持石</span>
+    <div class="header-auth" id="headerAuth"></div>
+    <div class="social-links">
+      <a href="https://space.bilibili.com/322448790" target="_blank" title="B站" aria-label="Bilibili">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.813 4.653h.854c1.51.054 2.769.578 3.773 1.574 1.004.995 1.524 2.249 1.56 3.76v7.36c-.036 1.51-.556 2.769-1.56 3.773s-2.262 1.524-3.773 1.56H5.333c-1.51-.036-2.769-.556-3.773-1.56S.036 18.858 0 17.347v-7.36c.036-1.511.556-2.765 1.56-3.76 1.004-.996 2.262-1.52 3.773-1.574h.774l-1.174-1.12a1.234 1.234 0 0 1-.373-.906c0-.356.124-.658.373-.907l.027-.027c.267-.249.573-.373.92-.373.347 0 .653.124.92.373L9.653 4.44c.071.071.134.142.187.213h4.267a.836.836 0 0 1 .16-.213l2.853-2.747c.267-.249.573-.373.92-.373.347 0 .662.151.929.4.267.249.391.551.391.907 0 .355-.124.657-.373.906l-1.174 1.12zM5.333 7.24c-.746.018-1.373.276-1.88.773-.506.498-.769 1.13-.786 1.894v7.52c.017.764.28 1.395.786 1.893.507.498 1.134.756 1.88.773h13.334c.746-.017 1.373-.275 1.88-.773.506-.498.769-1.129.786-1.893v-7.52c-.017-.765-.28-1.396-.786-1.894-.507-.497-1.134-.755-1.88-.773H5.333zM8 11.107c.356 0 .658.124.907.373l.08.08c.231.267.346.56.346.88v3.2c0 .356-.115.658-.347.907-.249.249-.551.373-.906.373-.356 0-.658-.124-.907-.373l-.08-.08c-.231-.267-.347-.56-.347-.88v-3.2c0-.356.116-.658.347-.907.249-.249.551-.373.907-.373zm8 0c.356 0 .658.124.907.373l.08.08c.231.267.347.56.347.88v3.2c0 .356-.116.658-.347.907-.249.249-.551.373-.907.373-.356 0-.658-.124-.907-.373l-.08-.08c-.231-.267-.347-.56-.347-.88v-3.2c0-.356.116-.658.347-.907.249-.249.551-.373.907-.373z"/></svg>
+      </a>
+      <a href="#" title="QQ群" aria-label="QQ Group">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M21.395 15.035a39.548 39.548 0 0 0-.803-2.264l-1.079-2.695c.001-.032.014-.562.014-.836C19.527 4.661 17.335 2.418 12 2.418s-7.527 2.243-7.527 6.822c0 .274.013.804.014.836l-1.08 2.695a38.97 38.97 0 0 0-.802 2.264c-1.021 3.283-1.045 4.17-.065 4.547 1.635.628 3.986-.504 5.277-1.064 1.806.45 3.871.563 6.183.563 2.312 0 4.377-.113 6.183-.563 1.291.56 3.642 1.692 5.277 1.064.98-.377.956-1.264-.065-4.547z"/></svg>
+      </a>
+    </div>
+    <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="菜单">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+
+<nav class="mobile-nav" id="mobileNav">
+  <a href="index.html">首页</a>
+  <a href="activities.html">活动合集</a>
+  <a href="market.html">动漫集市</a>
+  <a href="monthly.html">社团月刊</a>
+  <a href="fanworks.html">创作广场</a>
+  <a href="guestbook.html">留言板</a>
+</nav>
+
+<div class="page-wrapper" style="grid-template-columns: 1fr; max-width: 800px;">
+  <main class="main-content">
+    <div id="profileContent"><p style="text-align:center;padding:40px;color:var(--text-muted);">加载中...</p></div>
+  </main>
+</div>
+
+<!-- Edit Profile Modal -->
+<div class="modal-overlay" id="editProfileModal">
+  <div class="modal" style="max-width:480px;">
+    <button class="modal-close">&times;</button>
+    <h2 style="text-align:center;margin-bottom:16px;">修改信息</h2>
+    <div class="form-group"><label>用户名</label><input type="text" id="editUsername" placeholder="新的用户名" maxlength="20"></div>
+    <div class="form-group"><label>头像</label>
+      <div class="img-upload-area" id="avatarUploadArea"><div style="font-size:28px;">📷</div><p>点击上传头像</p><input type="file" id="avatarFile" accept="image/*" style="display:none;"></div>
+      <div id="avatarPreviewBox" style="text-align:center;margin-top:8px;"></div>
+    </div>
+    <button class="btn btn-primary" id="btnSaveProfile" style="width:100%;margin-top:12px;">保存修改</button>
+    <div class="admin-msg" id="profileMsg" style="margin-top:10px;"></div>
+  </div>
+</div>
+
+<!-- Avatar Crop Modal -->
+<div class="modal-overlay" id="cropModal">
+  <div class="modal" style="max-width:520px;padding:24px;">
+    <button class="modal-close" id="cropClose">&times;</button>
+    <h2 style="text-align:center;margin-bottom:4px;">裁剪头像</h2>
+    <p style="text-align:center;font-size:12px;color:var(--text-muted);margin-bottom:12px;">拖拽图片调整位置 · 滚轮缩放</p>
+    <div id="cropContainer" style="position:relative;width:320px;height:320px;margin:0 auto;overflow:hidden;background:#f0f0f0;border-radius:4px;cursor:grab;user-select:none;-webkit-user-select:none;">
+      <canvas id="cropCanvas" style="position:absolute;top:0;left:0;"></canvas>
+      <div id="cropOverlay" style="position:absolute;inset:0;pointer-events:none;">
+        <svg width="320" height="320" viewBox="0 0 320 320">
+          <defs><mask id="circleMask"><rect width="320" height="320" fill="white"/><circle cx="160" cy="150" r="100" fill="black"/></mask></defs>
+          <rect width="320" height="320" fill="rgba(0,0,0,0.5)" mask="url(#circleMask)"/>
+          <circle cx="160" cy="150" r="100" fill="none" stroke="#fff" stroke-width="2" stroke-dasharray="6,3"/>
+        </svg>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:10px;">
+      <input type="range" id="cropZoom" min="0.05" max="3" step="0.001" value="1" style="width:200px;">
+    </div>
+    <div style="text-align:center;margin-top:8px;">
+      <p style="font-size:11px;color:var(--text-muted);margin-bottom:4px;">预览</p>
+      <canvas id="cropPreview" width="80" height="80" style="border-radius:50%;border:2px solid var(--accent);display:block;margin:0 auto;"></canvas>
+    </div>
+    <button class="btn btn-primary" id="btnConfirmCrop" style="width:100%;margin-top:14px;">确认裁剪</button>
+  </div>
+</div>
+
+<!-- Security Center Modal -->
+<div class="modal-overlay" id="securityModal">
+  <div class="modal" style="max-width:480px;">
+    <button class="modal-close">&times;</button>
+    <h2 style="text-align:center;margin-bottom:16px;">安全中心</h2>
+
+    <!-- Change Password -->
+    <div style="border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:12px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div><strong style="font-size:14px;">修改密码</strong><p style="font-size:11px;color:var(--text-muted);">需要验证QQ号和手机号</p></div>
+        <button class="btn btn-outline btn-sm sec-btn" data-action="password">修改</button>
+      </div>
+      <div class="sec-form" id="secPassword" style="display:none;margin-top:12px;padding-top:12px;border-top:1px solid var(--border);">
+        <div class="form-group"><label>QQ号</label><input type="text" id="secPwQQ" placeholder="验证你的QQ号"></div>
+        <div class="form-group"><label>手机号</label><input type="text" id="secPwPhone" placeholder="验证你的手机号"></div>
+        <div class="form-group"><label>新密码</label><input type="password" id="secNewPw" placeholder="至少4位"></div>
+        <button class="btn btn-primary btn-sm" id="btnChangePw">确认修改密码</button>
+        <div class="admin-msg sec-msg" id="secPwMsg"></div>
+      </div>
+    </div>
+
+    <!-- Change QQ -->
+    <div style="border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:12px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div><strong style="font-size:14px;">修改QQ号</strong><p style="font-size:11px;color:var(--text-muted);">需要输入原QQ号验证</p></div>
+        <button class="btn btn-outline btn-sm sec-btn" data-action="QQ">修改</button>
+      </div>
+      <div class="sec-form" id="secQQ" style="display:none;margin-top:12px;padding-top:12px;border-top:1px solid var(--border);">
+        <div class="form-group"><label>原QQ号</label><input type="text" id="secOldQQ" placeholder="输入当前QQ号"></div>
+        <div class="form-group"><label>新QQ号</label><input type="text" id="secNewQQ" placeholder="输入新的QQ号"></div>
+        <button class="btn btn-primary btn-sm" id="btnChangeQQ">确认修改QQ</button>
+        <div class="admin-msg sec-msg" id="secQQMsg"></div>
+      </div>
+    </div>
+
+    <!-- Change Phone -->
+    <div style="border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:12px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div><strong style="font-size:14px;">修改手机号</strong><p style="font-size:11px;color:var(--text-muted);">需要输入原手机号验证</p></div>
+        <button class="btn btn-outline btn-sm sec-btn" data-action="phone">修改</button>
+      </div>
+      <div class="sec-form" id="secPhone" style="display:none;margin-top:12px;padding-top:12px;border-top:1px solid var(--border);">
+        <div class="form-group"><label>原手机号</label><input type="text" id="secOldPhone" placeholder="输入当前手机号"></div>
+        <div class="form-group"><label>新手机号</label><input type="text" id="secNewPhone" placeholder="输入新的手机号"></div>
+        <button class="btn btn-primary btn-sm" id="btnChangePhone">确认修改手机</button>
+        <div class="admin-msg sec-msg" id="secPhoneMsg"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-stats">
+      <span>今日 PV：<strong id="todayPV">--</strong></span>
+      <span>今日 UV：<strong id="todayUV">--</strong></span>
+      <span>总访问量：<strong id="totalVisits">--</strong></span>
+    </div>
+    <p>&copy; 2026 东方动漫社 · 神秘据点 | Powered by Love &amp; ACG</p>
+  </div>
+</footer>
+
+<button class="back-to-top" id="backToTop" aria-label="回到顶部">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m18 15-6-6-6 6"/></svg>
+</button>
+
+<script src="js/main.js"></script>
+<script>
+function esc(str) { var d = document.createElement('div'); d.textContent = str || ''; return d.innerHTML; }
+
+var urlParams = new URLSearchParams(window.location.search);
+var profileId = urlParams.get('id');
+
+// Get current user from API directly (not relying on async global currentUser)
+function loadProfile() {
+  API.get('/api/auth/me').then(function(meData) {
+    var me = meData.user || null;
+    var currentId = me ? me.id : null;
+
+    if (!profileId) {
+      if (currentId) { profileId = currentId; window.history.replaceState(null, '', '?id=' + profileId); }
+      else { document.getElementById('profileContent').innerHTML = '<p style="text-align:center;padding:40px;color:var(--text-muted);">请先登录</p>'; return; }
+    }
+
+    API.get('/api/auth/profile/' + profileId).then(function(data) {
+      if (!data.user) { document.getElementById('profileContent').innerHTML = '<p style="text-align:center;padding:40px;color:var(--text-muted);">用户不存在</p>'; return; }
+      var u = data.user;
+      var isOwner = currentId === u.id;
+    var avatarHTML = u.avatar
+      ? '<img src="' + u.avatar + '" alt="头像" style="width:80px;height:80px;border-radius:50%;object-fit:cover;border:3px solid var(--accent);">'
+      : '<div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#fce4ec,#e8eaf6);display:flex;align-items:center;justify-content:center;font-size:36px;color:var(--accent);border:3px solid var(--accent);">' + esc(u.username.charAt(0).toUpperCase()) + '</div>';
+
+    var html = '<div style="background:#fff;border-radius:12px;border:1px solid var(--border);padding:32px;margin-bottom:20px;text-align:center;">' +
+      avatarHTML +
+      '<h2 style="margin:12px 0 4px;">' + esc(u.username) + (typeof titleBadge==='function' ? titleBadge(u.title) : '') + '</h2>' +
+      '<p style="color:var(--text-muted);font-size:13px;">' + (u.role === 'admin' ? '管理员' : '社员') + ' · ' + u.created_at + ' 加入</p>' +
+      '<p style="font-size:13px;color:var(--accent);font-weight:600;margin-top:4px;">共发布 ' + data.totalPosts + ' 篇内容</p>';
+
+    html += (isOwner ? '<div style="display:flex;gap:8px;justify-content:center;margin-top:12px;">' +
+      '<button class="btn btn-outline" id="btnEditProfile" style="font-size:13px;">修改信息</button>' +
+      '<button class="btn btn-outline" id="btnSecurity" style="font-size:13px;">安全中心</button></div>' : '') + '</div>';
+
+    // Tabs for user's content
+    html += '<div style="display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap;">' +
+      '<button class="filter-tab active" data-tab="fanworks">创作（' + data.fanworks.length + '）</button>' +
+      '<button class="filter-tab" data-tab="market">集市（' + data.marketItems.length + '）</button>' +
+      '<button class="filter-tab" data-tab="threads">帖子（' + data.threads.length + '）</button>' +
+      '</div>';
+
+    // Fanworks
+    html += '<div id="tab-fanworks" class="profile-tab">' +
+      (data.fanworks.length === 0 ? '<p style="color:var(--text-muted);text-align:center;padding:20px;">暂无创作</p>' :
+        data.fanworks.map(function(f) {
+          return '<div style="display:flex;align-items:center;background:#fff;border:1px solid var(--border);border-radius:8px;margin-bottom:8px;transition:box-shadow 0.2s;" onmouseenter="this.style.boxShadow=\'0 2px 12px rgba(0,0,0,0.06)\'" onmouseleave="this.style.boxShadow=\'none\'">' +
+            '<a href="fanworks.html?id=' + f.id + '" style="flex:1;display:block;padding:14px;text-decoration:none;color:inherit;">' +
+            '<div style="display:flex;gap:4px;margin-bottom:4px;"><span class="cm-tag">' + esc(f.tag1) + '</span><span class="cm-tag">' + esc(f.tag2) + '</span></div>' +
+            '<p style="font-size:14px;color:var(--text-light);">' + esc((f.text || '').substring(0, 150)) + '...</p>' +
+            '<span style="font-size:11px;color:var(--text-muted);">' + f.created_at + '</span></a>' +
+            (isOwner ? '<button class="del-post-btn" data-type="fanworks" data-id="' + f.id + '" style="background:none;border:none;color:#c62828;cursor:pointer;padding:8px 14px;font-size:18px;flex-shrink:0;" title="删除">✕</button>' : '') +
+            '</div>';
+        }).join('')) + '</div>';
+
+    // Market
+    html += '<div id="tab-market" class="profile-tab" style="display:none;">' +
+      (data.marketItems.length === 0 ? '<p style="color:var(--text-muted);text-align:center;padding:20px;">暂无集市物品</p>' :
+        data.marketItems.map(function(m) {
+          return '<div style="display:flex;align-items:center;background:#fff;border:1px solid var(--border);border-radius:8px;margin-bottom:8px;transition:box-shadow 0.2s;" onmouseenter="this.style.boxShadow=\'0 2px 12px rgba(0,0,0,0.06)\'" onmouseleave="this.style.boxShadow=\'none\'">' +
+            '<a href="market.html?id=' + m.id + '" style="flex:1;display:block;padding:14px;text-decoration:none;color:inherit;">' +
+            '<div style="display:flex;gap:4px;margin-bottom:4px;"><span class="cm-tag">' + esc(m.tag) + '</span>' + (m.ip ? '<span class="cm-tag" style="background:#e3f2fd;color:#1e88e5;">' + esc(m.ip) + '</span>' : '') + '</div>' +
+            '<strong>' + esc(m.title) + '</strong> <span style="color:var(--accent);">' + esc(m.price) + '</span>' +
+            '<p style="font-size:13px;color:var(--text-muted);margin-top:4px;">' + esc((m.text || '').substring(0, 100)) + '...</p>' +
+            '<span style="font-size:11px;color:var(--text-muted);">' + m.created_at + '</span></a>' +
+            (isOwner ? '<button class="del-post-btn" data-type="market" data-id="' + m.id + '" style="background:none;border:none;color:#c62828;cursor:pointer;padding:8px 14px;font-size:18px;flex-shrink:0;" title="删除">✕</button>' : '') +
+            '</div>';
+        }).join('')) + '</div>';
+
+    // Threads
+    html += '<div id="tab-threads" class="profile-tab" style="display:none;">' +
+      (data.threads.length === 0 ? '<p style="color:var(--text-muted);text-align:center;padding:20px;">暂无帖子</p>' :
+        data.threads.map(function(t) {
+          return '<div style="display:flex;align-items:center;background:#fff;border:1px solid var(--border);border-radius:8px;margin-bottom:8px;transition:box-shadow 0.2s;" onmouseenter="this.style.boxShadow=\'0 2px 12px rgba(0,0,0,0.06)\'" onmouseleave="this.style.boxShadow=\'none\'">' +
+            '<a href="guestbook.html?thread=' + t.id + '" style="flex:1;display:block;padding:14px;text-decoration:none;color:inherit;">' +
+            '<strong>' + esc(t.title || '无标题') + '</strong>' +
+            '<p style="font-size:13px;color:var(--text-muted);margin-top:4px;">' + esc((t.text || '').substring(0, 120)) + '...</p>' +
+            '<span style="font-size:11px;color:var(--text-muted);">' + t.created_at + '</span></a>' +
+            (isOwner ? '<button class="del-post-btn" data-type="guestbook" data-id="' + t.id + '" style="background:none;border:none;color:#c62828;cursor:pointer;padding:8px 14px;font-size:18px;flex-shrink:0;" title="删除">✕</button>' : '') +
+            '</div>';
+        }).join('')) + '</div>';
+
+    document.getElementById('profileContent').innerHTML = html;
+
+    // Tab switching
+    document.querySelectorAll('.filter-tab').forEach(function(tab) {
+      tab.addEventListener('click', function() {
+        document.querySelectorAll('.filter-tab').forEach(function(t) { t.classList.remove('active'); });
+        this.classList.add('active');
+        document.querySelectorAll('.profile-tab').forEach(function(p) { p.style.display = 'none'; });
+        var target = document.getElementById('tab-' + this.dataset.tab);
+        if (target) target.style.display = '';
+      });
+    });
+
+    // Delete post buttons
+    document.querySelectorAll('.del-post-btn').forEach(function(btn) {
+      btn.addEventListener('click', function(e) {
+        e.preventDefault(); e.stopPropagation();
+        if (!confirm('确定删除这条内容吗？删除后不可恢复。')) return;
+        var type = this.dataset.type;
+        var id = this.dataset.id;
+        var row = this.parentNode; // the wrapper div
+        var apiMap = { fanworks: '/api/fanworks/', market: '/api/market/', guestbook: '/api/guestbook/' };
+        var url = apiMap[type];
+        if (!url) return;
+        // Optimistic removal
+        row.style.opacity = '0.4';
+        API.del(url + id).then(function(d) {
+          if (d.error) { row.style.opacity = '1'; alert(d.error); return; }
+          if (row.parentNode) row.parentNode.removeChild(row);
+        }).catch(function(e) {
+          row.style.opacity = '1';
+          alert('删除失败：' + (e.message || '请重试'));
+        });
+      });
+    });
+
+    // Edit profile modal
+    if (isOwner) {
+      var avatarData = u.avatar || '';
+      var editModal = document.getElementById('editProfileModal');
+      var msgEl = document.getElementById('profileMsg');
+      var previewBox = document.getElementById('avatarPreviewBox');
+
+      function updatePreview(src) {
+        previewBox.innerHTML = src ? '<canvas id="avatarThumb" width="64" height="64" style="border-radius:50%;border:2px solid var(--accent);display:block;margin:0 auto;"></canvas>' : '';
+        if (src) {
+          var img = new Image();
+          img.onload = function() {
+            var c = document.getElementById('avatarThumb');
+            if (!c) return;
+            var ctx = c.getContext('2d');
+            var size = Math.min(img.width, img.height);
+            var sx = (img.width - size) / 2, sy = (img.height - size) / 2;
+            ctx.drawImage(img, sx, sy, size, size, 0, 0, 64, 64);
+          };
+          img.src = src;
+        }
+      }
+
+      document.getElementById('btnEditProfile').addEventListener('click', function() {
+        document.getElementById('editUsername').value = u.username || '';
+        updatePreview(avatarData);
+        editModal.classList.add('open'); document.body.style.overflow = 'hidden';
+      });
+
+      editModal.querySelector('.modal-close').addEventListener('click', function() {
+        editModal.classList.remove('open'); document.body.style.overflow = '';
+      });
+      editModal.addEventListener('click', function(e) { if (e.target === editModal) { editModal.classList.remove('open'); document.body.style.overflow = ''; } });
+
+      document.getElementById('avatarUploadArea').addEventListener('click', function() {
+        document.getElementById('avatarFile').click();
+      });
+
+      document.getElementById('avatarFile').addEventListener('change', function() {
+        var file = this.files[0];
+        if (!file) return;
+        var reader = new FileReader();
+        reader.onload = function() { openCropModal(reader.result); };
+        reader.readAsDataURL(file);
+        this.value = '';
+      });
+
+      // ---- Interactive Crop Modal ----
+      var cropModal = document.getElementById('cropModal');
+      var cropCanvas = document.getElementById('cropCanvas');
+      var cropCtx = cropCanvas.getContext('2d');
+      var cropPreview = document.getElementById('cropPreview');
+      var cropZoom = document.getElementById('cropZoom');
+      var cropImg = null;
+      var offsetX = 0, offsetY = 0, scale = 1;
+      var dragging = false, dragStartX = 0, dragStartY = 0, startOffX = 0, startOffY = 0;
+      var CROP_SIZE = 200, CONTAINER = 320, CROP_CX = 160, CROP_CY = 150;
+
+      cropCanvas.width = CONTAINER; cropCanvas.height = CONTAINER;
+      var pctx = cropPreview.getContext('2d');
+
+      var HALF = CROP_SIZE / 2;
+      function renderCrop() {
+        if (!cropImg) return;
+        cropCtx.clearRect(0, 0, CONTAINER, CONTAINER);
+        cropCtx.drawImage(cropImg, offsetX, offsetY, cropImg.width * scale, cropImg.height * scale);
+        // Preview: extract the region under the crop circle
+        var srcX = (CROP_CX - HALF - offsetX) / scale;
+        var srcY = (CROP_CY - HALF - offsetY) / scale;
+        var srcW = CROP_SIZE / scale;
+        pctx.clearRect(0, 0, 80, 80);
+        pctx.save();
+        pctx.beginPath(); pctx.arc(40, 40, 40, 0, Math.PI * 2); pctx.clip();
+        pctx.drawImage(cropImg, srcX, srcY, srcW, srcW, 0, 0, 80, 80);
+        pctx.restore();
+      }
+
+      function openCropModal(src) {
+        var img = new Image();
+        img.onload = function() {
+          cropImg = img;
+          scale = Math.max(0.05, Math.min(3, Math.min(CONTAINER / img.width, CONTAINER / img.height)));
+          offsetX = (CONTAINER - img.width * scale) / 2;
+          offsetY = (CONTAINER - img.height * scale) / 2;
+          cropZoom.value = scale;
+          renderCrop();
+          cropModal.classList.add('open'); document.body.style.overflow = 'hidden';
+        };
+        img.src = src;
+      }
+
+      document.getElementById('cropClose').addEventListener('click', function() {
+        cropModal.classList.remove('open'); document.body.style.overflow = '';
+      });
+
+      function applyZoom(newScale) {
+        if (!cropImg) return;
+        // Keep the image point under crop CENTER fixed
+        var imgCX = (CROP_CX - offsetX) / scale;
+        var imgCY = (CROP_CY - offsetY) / scale;
+        scale = newScale;
+        offsetX = CROP_CX - imgCX * scale;
+        offsetY = CROP_CY - imgCY * scale;
+        renderCrop();
+      }
+
+      cropZoom.addEventListener('input', function() {
+        applyZoom(parseFloat(this.value));
+      });
+
+      var container = document.getElementById('cropContainer');
+      container.addEventListener('mousedown', function(e) {
+        dragging = true; dragStartX = e.clientX; dragStartY = e.clientY;
+        startOffX = offsetX; startOffY = offsetY;
+        container.style.cursor = 'grabbing'; e.preventDefault();
+      });
+      window.addEventListener('mousemove', function(e) {
+        if (!dragging) return;
+        offsetX = startOffX + (e.clientX - dragStartX);
+        offsetY = startOffY + (e.clientY - dragStartY);
+        renderCrop();
+      });
+      window.addEventListener('mouseup', function() {
+        dragging = false; container.style.cursor = 'grab';
+      });
+      container.addEventListener('wheel', function(e) {
+        e.preventDefault();
+        var factor = 1 - e.deltaY * 0.0005;
+        var newScale = Math.max(0.05, Math.min(3, scale * factor));
+        cropZoom.value = newScale;
+        applyZoom(newScale);
+      });
+      // Touch
+      container.addEventListener('touchstart', function(e) {
+        if (e.touches.length === 1) {
+          dragging = true; dragStartX = e.touches[0].clientX; dragStartY = e.touches[0].clientY;
+          startOffX = offsetX; startOffY = offsetY;
+        }
+      });
+      window.addEventListener('touchmove', function(e) {
+        if (!dragging) return;
+        offsetX = startOffX + (e.touches[0].clientX - dragStartX);
+        offsetY = startOffY + (e.touches[0].clientY - dragStartY);
+        renderCrop();
+      });
+      window.addEventListener('touchend', function() { dragging = false; });
+
+      document.getElementById('btnConfirmCrop').addEventListener('click', function() {
+        // Extract cropped region
+        var tmpCanvas = document.createElement('canvas');
+        tmpCanvas.width = CROP_SIZE; tmpCanvas.height = CROP_SIZE;
+        var tctx = tmpCanvas.getContext('2d');
+        var srcX = (CROP_CX - HALF - offsetX) / scale;
+        var srcY = (CROP_CY - HALF - offsetY) / scale;
+        var srcW = CROP_SIZE / scale;
+        tctx.drawImage(cropImg, srcX, srcY, srcW, srcW, 0, 0, CROP_SIZE, CROP_SIZE);
+        avatarData = tmpCanvas.toDataURL('image/jpeg', 0.85);
+        updatePreview(avatarData);
+        cropModal.classList.remove('open'); document.body.style.overflow = 'hidden';
+      });
+
+      // Save profile (username + avatar only)
+      document.getElementById('btnSaveProfile').addEventListener('click', function() {
+        var username = document.getElementById('editUsername').value.trim();
+        var btn = this;
+        if (!username) { msgEl.textContent = '用户名不能为空'; msgEl.className = 'admin-msg error'; return; }
+        btn.disabled = true; btn.textContent = '保存中...';
+        msgEl.textContent = ''; msgEl.className = 'admin-msg';
+        API.put('/api/auth/profile', { username: username, avatar: avatarData }).then(function(d) {
+          if (d.error) { msgEl.textContent = d.error; msgEl.className = 'admin-msg error'; btn.disabled = false; btn.textContent = '保存修改'; return; }
+          msgEl.textContent = '保存成功！'; msgEl.className = 'admin-msg success';
+          setTimeout(function() { location.reload(); }, 800);
+        }).catch(function() {
+          msgEl.textContent = '保存失败'; msgEl.className = 'admin-msg error';
+          btn.disabled = false; btn.textContent = '保存修改';
+        });
+      });
+
+      // ---- Security Center ----
+      var secModal = document.getElementById('securityModal');
+      document.getElementById('btnSecurity').addEventListener('click', function() {
+        document.querySelectorAll('.sec-form').forEach(function(el) { el.style.display = 'none'; });
+        document.getElementById('secPwQQ').value = '';
+        document.getElementById('secPwPhone').value = '';
+        document.getElementById('secNewPw').value = '';
+        document.getElementById('secOldQQ').value = '';
+        document.getElementById('secNewQQ').value = '';
+        document.getElementById('secOldPhone').value = '';
+        document.getElementById('secNewPhone').value = '';
+
+        var hasQQ = u.qq && u.qq.trim();
+        var hasPhone = u.phone && u.phone.trim();
+
+        // Password section hints
+        document.getElementById('secPwQQ').placeholder = hasQQ ? '请输入你的QQ号以验证身份' : '你尚未绑定QQ，留空即可';
+        document.getElementById('secPwPhone').placeholder = hasPhone ? '请输入你的手机号以验证身份' : '你尚未绑定手机，留空即可';
+        // QQ/Phone section hints
+        document.getElementById('secOldQQ').placeholder = hasQQ ? '请输入当前QQ号以验证' : '你尚未绑定QQ，留空直接设置';
+        document.getElementById('secOldPhone').placeholder = hasPhone ? '请输入当前手机号以验证' : '你尚未绑定手机，留空直接设置';
+
+        secModal.classList.add('open'); document.body.style.overflow = 'hidden';
+      });
+      secModal.querySelector('.modal-close').addEventListener('click', function() { secModal.classList.remove('open'); document.body.style.overflow = ''; });
+      secModal.addEventListener('click', function(e) { if (e.target === secModal) { secModal.classList.remove('open'); document.body.style.overflow = ''; } });
+
+      // Toggle security sub-forms
+      document.querySelectorAll('.sec-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          var action = this.dataset.action;
+          var form = document.getElementById('sec' + action.charAt(0).toUpperCase() + action.slice(1));
+          if (!form) return;
+          document.querySelectorAll('.sec-form').forEach(function(el) { el.style.display = 'none'; });
+          form.style.display = 'block';
+        });
+      });
+
+      function secMsg(id, text, type) {
+        var el = document.getElementById(id); if (!el) return;
+        el.textContent = text; el.className = 'admin-msg sec-msg ' + type;
+        setTimeout(function() { el.textContent = ''; el.className = 'admin-msg sec-msg'; }, 3000);
+      }
+
+      // Change password
+      document.getElementById('btnChangePw').addEventListener('click', function() {
+        var qq = document.getElementById('secPwQQ').value.trim();
+        var phone = document.getElementById('secPwPhone').value.trim();
+        var pw = document.getElementById('secNewPw').value;
+        if (!pw || pw.length < 4) { secMsg('secPwMsg', '新密码至少4位', 'error'); return; }
+        var btn = this; btn.disabled = true; btn.textContent = '处理中...';
+        API.put('/api/auth/security/password', { qq: qq, phone: phone, newPassword: pw }).then(function(d) {
+          btn.disabled = false; btn.textContent = '确认修改密码';
+          if (d.error) { secMsg('secPwMsg', d.error, 'error'); return; }
+          secMsg('secPwMsg', '密码修改成功！', 'success');
+        });
+      });
+
+      // Change QQ
+      document.getElementById('btnChangeQQ').addEventListener('click', function() {
+        var oldQQ = document.getElementById('secOldQQ').value.trim();
+        var newQQ = document.getElementById('secNewQQ').value.trim();
+        if (!newQQ) { secMsg('secQQMsg', '请输入新QQ号', 'error'); return; }
+        var btn = this; btn.disabled = true; btn.textContent = '处理中...';
+        API.put('/api/auth/security/qq', { oldQQ: oldQQ, newQQ: newQQ }).then(function(d) {
+          btn.disabled = false; btn.textContent = '确认修改QQ';
+          if (d.error) { secMsg('secQQMsg', d.error, 'error'); return; }
+          secMsg('secQQMsg', 'QQ号修改成功！', 'success');
+          setTimeout(function() { location.reload(); }, 1000);
+        });
+      });
+
+      // Change phone
+      document.getElementById('btnChangePhone').addEventListener('click', function() {
+        var oldPhone = document.getElementById('secOldPhone').value.trim();
+        var newPhone = document.getElementById('secNewPhone').value.trim();
+        if (!newPhone) { secMsg('secPhoneMsg', '请输入新手机号', 'error'); return; }
+        var btn = this; btn.disabled = true; btn.textContent = '处理中...';
+        API.put('/api/auth/security/phone', { oldPhone: oldPhone, newPhone: newPhone }).then(function(d) {
+          btn.disabled = false; btn.textContent = '确认修改手机';
+          if (d.error) { secMsg('secPhoneMsg', d.error, 'error'); return; }
+          secMsg('secPhoneMsg', '手机号修改成功！', 'success');
+          setTimeout(function() { location.reload(); }, 1000);
+        });
+      });
+
+      updatePreview(avatarData);
+    }
+  });
+  });
+}
+
+loadProfile();
+</script>
+</body>
+</html>

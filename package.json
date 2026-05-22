@@ -1,0 +1,15 @@
+{
+  "name": "dfdm-club",
+  "version": "1.0.0",
+  "description": "东方动漫社 · 神秘据点",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "better-sqlite3": "^12.10.0",
+    "express": "^5.2.1",
+    "uuid": "^14.0.0"
+  }
+}

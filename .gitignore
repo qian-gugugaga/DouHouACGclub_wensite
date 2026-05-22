@@ -1,0 +1,12 @@
+node_modules/
+data/
+uploads/
+.env
+.DS_Store
+*.log
+.claude/
+参考图片/
+*.docx
+~$*
+管理账号.txt
+需求文档.md

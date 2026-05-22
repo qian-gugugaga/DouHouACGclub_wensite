@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="东方动漫社创作广场 — 画作、文章、Cos 正片，社员创作展示与投稿">
+  <title>创作广场 · 东方动漫社</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="images/logo.jpg">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      <img src="images/logo.jpg" alt="东方动漫社" class="logo-img">
+      东方动漫社
+    </a>
+    <nav class="nav-links">
+      <a href="index.html">首页</a>
+      <a href="activities.html">活动合集</a>
+      <a href="market.html">动漫集市</a>
+      <a href="monthly.html">社团月刊</a>
+      <a href="fanworks.html" class="active">创作广场</a>
+      <a href="guestbook.html">留言板</a>
+    </nav>
+    <span class="header-slogan">我从南极来，最喜欢持石</span>
+    <div class="header-auth" id="headerAuth"></div>
+    <div class="social-links">
+      <a href="https://space.bilibili.com/322448790" target="_blank" title="B站" aria-label="Bilibili">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.813 4.653h.854c1.51.054 2.769.578 3.773 1.574 1.004.995 1.524 2.249 1.56 3.76v7.36c-.036 1.51-.556 2.769-1.56 3.773s-2.262 1.524-3.773 1.56H5.333c-1.51-.036-2.769-.556-3.773-1.56S.036 18.858 0 17.347v-7.36c.036-1.511.556-2.765 1.56-3.76 1.004-.996 2.262-1.52 3.773-1.574h.774l-1.174-1.12a1.234 1.234 0 0 1-.373-.906c0-.356.124-.658.373-.907l.027-.027c.267-.249.573-.373.92-.373.347 0 .653.124.92.373L9.653 4.44c.071.071.134.142.187.213h4.267a.836.836 0 0 1 .16-.213l2.853-2.747c.267-.249.573-.373.92-.373.347 0 .662.151.929.4.267.249.391.551.391.907 0 .355-.124.657-.373.906l-1.174 1.12zM5.333 7.24c-.746.018-1.373.276-1.88.773-.506.498-.769 1.13-.786 1.894v7.52c.017.764.28 1.395.786 1.893.507.498 1.134.756 1.88.773h13.334c.746-.017 1.373-.275 1.88-.773.506-.498.769-1.129.786-1.893v-7.52c-.017-.765-.28-1.396-.786-1.894-.507-.497-1.134-.755-1.88-.773H5.333zM8 11.107c.356 0 .658.124.907.373l.08.08c.231.267.346.56.346.88v3.2c0 .356-.115.658-.347.907-.249.249-.551.373-.906.373-.356 0-.658-.124-.907-.373l-.08-.08c-.231-.267-.347-.56-.347-.88v-3.2c0-.356.116-.658.347-.907.249-.249.551-.373.907-.373zm8 0c.356 0 .658.124.907.373l.08.08c.231.267.347.56.347.88v3.2c0 .356-.116.658-.347.907-.249.249-.551.373-.907.373-.356 0-.658-.124-.907-.373l-.08-.08c-.231-.267-.347-.56-.347-.88v-3.2c0-.356.116-.658.347-.907.249-.249.551-.373.907-.373z"/></svg>
+      </a>
+      <a href="#" title="QQ群" aria-label="QQ Group">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M21.395 15.035a39.548 39.548 0 0 0-.803-2.264l-1.079-2.695c.001-.032.014-.562.014-.836C19.527 4.661 17.335 2.418 12 2.418s-7.527 2.243-7.527 6.822c0 .274.013.804.014.836l-1.08 2.695a38.97 38.97 0 0 0-.802 2.264c-1.021 3.283-1.045 4.17-.065 4.547 1.635.628 3.986-.504 5.277-1.064 1.806.45 3.871.563 6.183.563 2.312 0 4.377-.113 6.183-.563 1.291.56 3.642 1.692 5.277 1.064.98-.377.956-1.264-.065-4.547z"/></svg>
+      </a>
+    </div>
+    <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="菜单">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+
+<nav class="mobile-nav" id="mobileNav">
+  <a href="index.html">首页</a>
+  <a href="activities.html">活动合集</a>
+  <a href="market.html">动漫集市</a>
+  <a href="monthly.html">社团月刊</a>
+  <a href="fanworks.html">创作广场</a>
+  <a href="guestbook.html">留言板</a>
+</nav>
+
+<div class="page-wrapper full-width">
+  <main class="main-content">
+
+    <div class="page-header">
+      <div class="breadcrumb"><a href="index.html">首页</a><span>/</span>创作广场</div>
+      <h1>创作广场</h1>
+    </div>
+
+    <div class="filter-tabs" style="display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap;">
+      <button class="filter-tab active" data-filter="all">全部</button>
+      <button class="filter-tab" data-filter="原创">原创</button>
+      <button class="filter-tab" data-filter="同人">同人</button>
+      <button class="filter-tab" data-filter="画">画</button>
+      <button class="filter-tab" data-filter="COS">COS</button>
+      <button class="filter-tab" data-filter="文章">文章</button>
+      <button class="filter-tab" data-filter="其他">其他</button>
+      <button class="filter-tab" data-filter="mine" id="tabMine" style="color:#e65100;font-weight:500;">我的</button>
+    </div>
+
+    <div class="masonry" id="fanworksMasonry">
+      <!-- Dynamic content loaded by JS -->
+    </div>
+
+  </main>
+</div>
+
+<!-- Submission Modal -->
+<div class="modal-overlay" id="submitModal">
+  <div class="modal">
+    <button class="modal-close">&times;</button>
+    <h2>我要投稿</h2>
+    <div class="tag-row">
+      <div class="tag-group" id="tagGroup1">
+        <label>创作性质</label>
+        <div class="tag-options">
+          <span class="tag-option">原创</span>
+          <span class="tag-option">同人</span>
+        </div>
+      </div>
+      <div class="tag-group" id="tagGroup2">
+        <label>作品类型</label>
+        <div class="tag-options">
+          <span class="tag-option">文章</span>
+          <span class="tag-option">画</span>
+          <span class="tag-option">COS</span>
+          <span class="tag-option">其他</span>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label style="font-size:13px;font-weight:600;display:block;margin-bottom:6px;">CN（创作者名）</label>
+      <input type="text" id="submissionCN" placeholder="你的圈名/笔名" maxlength="30">
+    </div>
+    <div class="form-group">
+      <label style="font-size:13px;font-weight:600;display:block;margin-bottom:6px;">上传图片（第一张为封面）</label>
+      <div class="img-upload-area" id="imgUploadTrigger">
+        <div style="font-size:28px;">🖼️</div>
+        <p>点击上传图片，支持多张</p>
+        <input type="file" id="submissionImages" accept="image/*" multiple style="display:none;">
+      </div>
+      <div class="img-previews" id="submissionImgPreviews"></div>
+    </div>
+    <div class="form-group">
+      <label style="font-size:13px;font-weight:600;display:block;margin-bottom:6px;">正文内容</label>
+      <textarea id="submissionText" placeholder="写下你想说的话..." style="min-height:120px;"></textarea>
+    </div>
+    <button class="submit-btn" id="submitFormBtn">提交投稿</button>
+  </div>
+</div>
+
+<!-- Content Detail Modal (小黑盒风格) -->
+<div class="content-modal-overlay" id="contentModal">
+  <div class="content-modal">
+    <button class="cm-close">&times;</button>
+    <div class="cm-carousel">
+      <div class="carousel-track"></div>
+      <button class="carousel-btn prev">&lsaquo;</button>
+      <button class="carousel-btn next">&rsaquo;</button>
+      <div class="carousel-dots"></div>
+    </div>
+    <div class="cm-body">
+      <div class="cm-tags"></div>
+      <div class="cm-author"></div>
+      <div class="cm-text"></div>
+      <div class="cm-actions">
+        <button class="cm-like-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          <span class="count">0</span>
+        </button>
+      </div>
+      <!-- Comments -->
+      <div class="cm-comments" id="fanworkComments" style="border-top:1px solid var(--border);margin-top:14px;padding-top:14px;">
+        <h4 style="font-size:14px;font-weight:600;margin-bottom:10px;">评论</h4>
+        <div id="fanworkCommentList"></div>
+        <div style="margin-top:10px;">
+          <textarea id="fanworkCommentInput" placeholder="写下你的评论..." style="width:100%;min-height:60px;padding:8px;border:1px solid var(--border);border-radius:6px;font-size:13px;resize:vertical;outline:none;font-family:var(--font-sans);"></textarea>
+          <button id="fanworkCommentBtn" class="btn btn-primary" style="font-size:12px;margin-top:6px;">发表评论</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Floating Submit Button -->
+<button class="float-submit-btn" id="openSubmitModal">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+  我要投稿
+</button>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-stats">
+      <span>今日 PV：<strong id="todayPV">--</strong></span>
+      <span>今日 UV：<strong id="todayUV">--</strong></span>
+      <span>总访问量：<strong id="totalVisits">--</strong></span>
+    </div>
+    <p>&copy; 2026 东方动漫社 · 神秘据点 | Powered by Love &amp; ACG</p>
+  </div>
+</footer>
+
+<button class="back-to-top" id="backToTop" aria-label="回到顶部">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m18 15-6-6-6 6"/></svg>
+</button>
+
+<script src="js/main.js"></script>
+<script>
+(function() {
+  var masonry = document.getElementById('fanworksMasonry');
+  var allWorksCache = [];
+  var myWorksCache = [];
+  var currentFilter = 'all';
+  var statusLabel = { pending: '审核中', approved: '已通过', rejected: '已拒绝' };
+  var statusColor = { pending: '#fb8c00', approved: '#43a047', rejected: '#c62828' };
+
+  function getAllWorks() {
+    return API.get('/api/fanworks').then(function(data) {
+      if (Array.isArray(data)) return data;
+      return [];
+    }).catch(function() { return []; });
+  }
+
+  function getMyWorks() {
+    if (!API.token) return Promise.resolve([]);
+    return API.get('/api/fanworks/mine').then(function(data) {
+      if (Array.isArray(data)) return data;
+      return [];
+    }).catch(function() { return []; });
+  }
+
+  var colorBgMap = { '画': '#fce4ec,#f8bbd0', 'COS': '#e8eaf6,#c5cae9', '文章': '#fff3e0,#ffe0b2', '其他': '#f3e5f5,#e1bee7' };
+  var emojiMap = { '画': '🎨', 'COS': '📸', '文章': '📝', '其他': '📦' };
+
+  function makeCard(w, showStatus) {
+    var coverSrc = w.images && w.images.length > 0 ? w.images[0] : '';
+    var minH = w.tag2 === '文章' ? 200 : (w.tag2 === 'COS' ? 320 : 240);
+    var innerHTML = coverSrc
+      ? '<img src="' + coverSrc + '" alt="" style="width:100%;height:100%;object-fit:cover;">'
+      : '<div style="background:linear-gradient(135deg,' + (colorBgMap[w.tag2] || '#e0e0e0,#d0d0d0') + ');min-height:' + minH + 'px;display:flex;align-items:center;justify-content:center;font-size:48px;">' + (emojiMap[w.tag2] || '✨') + '</div>';
+    var statusTag = showStatus ? '<span style="position:absolute;top:6px;right:6px;padding:2px 8px;border-radius:4px;font-size:10px;color:#fff;background:' + (statusColor[w.status] || '#757575') + ';z-index:2;">' + (statusLabel[w.status] || w.status) + '</span>' : '';
+    return '<div class="masonry-item" data-work="' + w.id + '" style="cursor:pointer;">' +
+      '<div class="masonry-img" style="position:relative;">' + statusTag + innerHTML + '</div>' +
+      '<div class="masonry-info">' +
+      '<h4>' + esc((w.text || '').substring(0, 40)) + '...</h4>' +
+      '<div class="author">' + esc(w.author_name || '') + (typeof titleBadge==='function' ? titleBadge(w.author_title) : '') + ' · ' + esc(w.tag1) + ' · ' + esc(w.tag2) + '</div>' +
+      '<div class="actions"><button class="like-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg> <span class="count">' + (w.likes || 0) + '</span></button></div>' +
+      '</div></div>';
+  }
+
+  function renderWorks(filter) {
+    currentFilter = filter;
+    var works, showStatus = false;
+    if (filter === 'mine') {
+      works = myWorksCache;
+      showStatus = true;
+    } else {
+      works = allWorksCache;
+      if (filter && filter !== 'all') {
+        works = works.filter(function(w) { return w.tag1 === filter || w.tag2 === filter; });
+      }
+    }
+    if (works.length === 0) {
+      masonry.innerHTML = '<p style="text-align:center;padding:40px;color:var(--text-muted);">' + (filter === 'mine' ? '你还没有投稿，点击右下角「我要投稿」开始吧~' : '暂无作品~') + '</p>';
+      return;
+    }
+    var sourceCache = filter === 'mine' ? myWorksCache : allWorksCache;
+    masonry.innerHTML = works.map(function(w) { return makeCard(w, showStatus); }).join('');
+    masonry.querySelectorAll('.masonry-item').forEach(function(item) {
+      item.addEventListener('click', function(e) {
+        if (e.target.closest('.like-btn')) return;
+        var workId = parseInt(this.dataset.work);
+        var work = sourceCache.find(function(w) { return w.id === workId; });
+        if (work && window.openContentModal) window.openContentModal(work);
+      });
+    });
+  }
+
+  document.querySelectorAll('.filter-tab').forEach(function(tab) {
+    tab.addEventListener('click', function() {
+      document.querySelectorAll('.filter-tab').forEach(function(t) { t.classList.remove('active'); });
+      this.classList.add('active');
+      var f = this.dataset.filter;
+      if (f === 'mine' && !API.token) { openAuthModal('login'); return; }
+      if (f === 'mine' && myWorksCache.length === 0) {
+        getMyWorks().then(function(d) { myWorksCache = d; renderWorks('mine'); });
+      } else {
+        renderWorks(f);
+      }
+    });
+  });
+
+  function esc(str) {
+    var d = document.createElement('div');
+    d.textContent = str || '';
+    return d.innerHTML;
+  }
+
+  // Initial load
+  getAllWorks().then(function(works) {
+    allWorksCache = works;
+    renderWorks('all');
+    // Open specific work from URL param (notification link)
+    var urlParams = new URLSearchParams(window.location.search);
+    var workId = urlParams.get('id');
+    if (workId) {
+      setTimeout(function() {
+        var work = allWorksCache.find(function(w) { return w.id === parseInt(workId); });
+        if (work && window.openContentModal) window.openContentModal(work);
+      }, 500);
+    }
+  });
+})();
+</script>
+</body>
+</html>

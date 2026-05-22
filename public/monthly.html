@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="东方动漫社社团月刊 — 每月精选：社员专访、作品展示、动漫资讯汇总">
+  <title>社团月刊 · 东方动漫社</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="images/logo.jpg">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      <img src="images/logo.jpg" alt="东方动漫社" class="logo-img">
+      东方动漫社
+    </a>
+    <nav class="nav-links">
+      <a href="index.html">首页</a>
+      <a href="activities.html">活动合集</a>
+      <a href="market.html">动漫集市</a>
+      <a href="monthly.html" class="active">社团月刊</a>
+      <a href="fanworks.html">创作广场</a>
+      <a href="guestbook.html">留言板</a>
+    </nav>
+    <span class="header-slogan">我从南极来，最喜欢持石</span>
+    <div class="header-auth" id="headerAuth"></div>
+    <div class="social-links">
+      <a href="https://space.bilibili.com/322448790" target="_blank" title="B站" aria-label="Bilibili">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.813 4.653h.854c1.51.054 2.769.578 3.773 1.574 1.004.995 1.524 2.249 1.56 3.76v7.36c-.036 1.51-.556 2.769-1.56 3.773s-2.262 1.524-3.773 1.56H5.333c-1.51-.036-2.769-.556-3.773-1.56S.036 18.858 0 17.347v-7.36c.036-1.511.556-2.765 1.56-3.76 1.004-.996 2.262-1.52 3.773-1.574h.774l-1.174-1.12a1.234 1.234 0 0 1-.373-.906c0-.356.124-.658.373-.907l.027-.027c.267-.249.573-.373.92-.373.347 0 .653.124.92.373L9.653 4.44c.071.071.134.142.187.213h4.267a.836.836 0 0 1 .16-.213l2.853-2.747c.267-.249.573-.373.92-.373.347 0 .662.151.929.4.267.249.391.551.391.907 0 .355-.124.657-.373.906l-1.174 1.12zM5.333 7.24c-.746.018-1.373.276-1.88.773-.506.498-.769 1.13-.786 1.894v7.52c.017.764.28 1.395.786 1.893.507.498 1.134.756 1.88.773h13.334c.746-.017 1.373-.275 1.88-.773.506-.498.769-1.129.786-1.893v-7.52c-.017-.765-.28-1.396-.786-1.894-.507-.497-1.134-.755-1.88-.773H5.333zM8 11.107c.356 0 .658.124.907.373l.08.08c.231.267.346.56.346.88v3.2c0 .356-.115.658-.347.907-.249.249-.551.373-.906.373-.356 0-.658-.124-.907-.373l-.08-.08c-.231-.267-.347-.56-.347-.88v-3.2c0-.356.116-.658.347-.907.249-.249.551-.373.907-.373zm8 0c.356 0 .658.124.907.373l.08.08c.231.267.347.56.347.88v3.2c0 .356-.116.658-.347.907-.249.249-.551.373-.907.373-.356 0-.658-.124-.907-.373l-.08-.08c-.231-.267-.347-.56-.347-.88v-3.2c0-.356.116-.658.347-.907.249-.249.551-.373.907-.373z"/></svg>
+      </a>
+      <a href="#" title="QQ群" aria-label="QQ Group">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M21.395 15.035a39.548 39.548 0 0 0-.803-2.264l-1.079-2.695c.001-.032.014-.562.014-.836C19.527 4.661 17.335 2.418 12 2.418s-7.527 2.243-7.527 6.822c0 .274.013.804.014.836l-1.08 2.695a38.97 38.97 0 0 0-.802 2.264c-1.021 3.283-1.045 4.17-.065 4.547 1.635.628 3.986-.504 5.277-1.064 1.806.45 3.871.563 6.183.563 2.312 0 4.377-.113 6.183-.563 1.291.56 3.642 1.692 5.277 1.064.98-.377.956-1.264-.065-4.547z"/></svg>
+      </a>
+    </div>
+    <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="菜单">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+
+<nav class="mobile-nav" id="mobileNav">
+  <a href="index.html">首页</a>
+  <a href="activities.html">活动合集</a>
+  <a href="market.html">动漫集市</a>
+  <a href="monthly.html">社团月刊</a>
+  <a href="fanworks.html">创作广场</a>
+  <a href="guestbook.html">留言板</a>
+</nav>
+
+<div class="page-wrapper full-width">
+  <main class="main-content">
+
+    <div class="page-header">
+      <div class="breadcrumb"><a href="index.html">首页</a><span>/</span>社团月刊</div>
+      <h1>社团月刊</h1>
+    </div>
+
+    <!-- Featured Article -->
+    <!-- Featured Article (dynamic) -->
+    <div id="featuredArticle"></div>
+
+    <div class="article-list" id="monthlyList">
+      <!-- Dynamic content loaded by JS -->
+    </div>
+
+    <!-- Monthly Detail Modal -->
+    <div class="modal-overlay" id="monthlyDetailModal">
+      <div class="modal" style="max-width:700px;">
+        <button class="modal-close">&times;</button>
+        <div id="monthlyDetailContent" class="post-content"></div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-stats">
+      <span>今日 PV：<strong id="todayPV">--</strong></span>
+      <span>今日 UV：<strong id="todayUV">--</strong></span>
+      <span>总访问量：<strong id="totalVisits">--</strong></span>
+    </div>
+    <p>&copy; 2026 东方动漫社 · 神秘据点 | Powered by Love &amp; ACG</p>
+  </div>
+</footer>
+
+<button class="back-to-top" id="backToTop" aria-label="回到顶部">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m18 15-6-6-6 6"/></svg>
+</button>
+
+<script src="js/main.js"></script>
+<script>
+(function() {
+  // Render content: replace {{img:N}} with actual images, wrap paragraphs
+  function renderContent(content, images) {
+    if (!content) return '';
+    // Escape HTML
+    var html = content.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    // Replace image placeholders
+    if (images && images.length > 0) {
+      html = html.replace(/\{\{img:(\d+)\}\}/g, function(match, idx) {
+        var i = parseInt(idx);
+        if (images[i]) {
+          return '<img src="' + images[i] + '" alt="配图" style="max-width:100%;border-radius:8px;margin:12px 0;display:block;">';
+        }
+        return match;
+      });
+    }
+    // Split by double newlines and wrap in <p>
+    var parts = html.split(/\n\n+/);
+    return parts.map(function(p) {
+      p = p.trim();
+      if (!p) return '';
+      if (p.match(/^<img\s/)) return p;
+      return '<p>' + p.replace(/\n/g, '<br>') + '</p>';
+    }).join('\n');
+  }
+
+  var list = document.getElementById('monthlyList');
+  var allIssues = [];
+
+  function loadIssues() {
+    API.get('/api/monthly').then(function(data) {
+      if (Array.isArray(data)) allIssues = data;
+      if (allIssues.length === 0) {
+        document.getElementById('featuredArticle').innerHTML = '';
+        list.innerHTML = '<p style="text-align:center;padding:40px;color:var(--text-muted);">暂无已发布的月刊~</p>';
+        return;
+      }
+      renderList();
+    });
+  }
+
+  function openDetail(issue, dateStr) {
+    var modal = document.getElementById('monthlyDetailModal');
+    var content = document.getElementById('monthlyDetailContent');
+    var html = renderContent(issue.content || '', issue.images || []);
+    content.innerHTML = '<h2>' + escapeHTML(issue.title) + '</h2>' +
+      (issue.cn ? '<p style="color:var(--accent);font-size:13px;font-weight:500;">CN：「' + escapeHTML(issue.cn) + '」</p>' : '') +
+      '<p style="color:var(--text-muted);font-size:13px;">' + escapeHTML(dateStr) + '</p><hr style="margin:16px 0;border-color:var(--border);">' + html;
+    modal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function excerpt(text, maxLen) {
+    var clean = (text || '').replace(/\{\{img:\d+\}\}/g, '[图]').replace(/\n\n/g, ' ').replace(/\n/g, ' ');
+    return clean.length > maxLen ? clean.substring(0, maxLen) + '...' : clean;
+  }
+
+  function makeIssueCard(issue, i, featured) {
+    var pd = issue.publish_date || issue.publishDate || '';
+  var dateStr = pd ? pd.replace('-', '年') + '月' : '';
+    var colors = ['#fce4ec,#f8bbd0', '#e3f2fd,#bbdefb', '#e8f5e9,#c8e6c9', '#fff3e0,#ffe0b2', '#f3e5f5,#e1bee7', '#e0f7fa,#b2ebf2'];
+    var coverHTML = issue.cover
+      ? '<div class="cover"><img src="' + issue.cover + '" alt="封面" style="width:100%;height:100%;object-fit:cover;"></div>'
+      : '<div class="cover" style="background:linear-gradient(135deg,' + colors[i % colors.length] + ');display:flex;align-items:center;justify-content:center;font-size:' + (featured ? '40px' : '32px') + ';">📖</div>';
+    var cardStyle = featured ? 'margin-bottom:20px;border-left:4px solid var(--accent);' : '';
+    return '<div class="article-card" style="cursor:pointer;' + cardStyle + '" data-idx="' + i + '">' +
+      coverHTML +
+      '<div class="article-info">' +
+      '<h3>' + escapeHTML(issue.title) + '</h3>' +
+      (issue.cn ? '<p style="font-size:12px;color:var(--accent);font-weight:500;margin:2px 0;">CN：「' + escapeHTML(issue.cn) + '」</p>' : '') +
+      '<p class="excerpt">' + escapeHTML(excerpt(issue.content, featured ? 120 : 80)) + '</p>' +
+      '<div class="article-meta">' +
+      (dateStr ? '<span>' + escapeHTML(dateStr) + '</span>' : '') +
+      '<span>点击阅读</span>' +
+      '</div></div></div>';
+  }
+
+  function renderList() {
+    // Featured article (first issue)
+    if (allIssues.length > 0) {
+      document.getElementById('featuredArticle').innerHTML = makeIssueCard(allIssues[0], 0, true);
+      document.getElementById('featuredArticle').querySelector('.article-card').addEventListener('click', function() {
+        var issue = allIssues[0];
+        openDetail(issue, (issue.publish_date || issue.publishDate || '') ? (issue.publish_date || issue.publishDate || '').replace('-', '年') + '月' : '');
+      });
+    }
+
+    // List (remaining)
+    list.innerHTML = allIssues.slice(1).map(function(issue, i) { return makeIssueCard(issue, i + 1, false); }).join('');
+
+    // Click handlers
+    list.querySelectorAll('.article-card').forEach(function(card) {
+      card.addEventListener('click', function() {
+        var idx = parseInt(this.dataset.idx);
+        var issue = allIssues[idx];
+        openDetail(issue, (issue.publish_date || issue.publishDate || '') ? (issue.publish_date || issue.publishDate || '').replace('-', '年') + '月' : '');
+      });
+    });
+  }
+
+  function escapeHTML(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  loadIssues();
+
+  // Monthly detail modal close
+  const detailModal = document.getElementById('monthlyDetailModal');
+  if (detailModal) {
+    detailModal.querySelector('.modal-close').addEventListener('click', () => {
+      detailModal.classList.remove('open');
+      document.body.style.overflow = '';
+    });
+    detailModal.addEventListener('click', (e) => {
+      if (e.target === detailModal) {
+        detailModal.classList.remove('open');
+        document.body.style.overflow = '';
+      }
+    });
+  }
+})();
+</script>
+</body>
+</html>

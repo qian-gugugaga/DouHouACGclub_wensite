@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>管理后台 · 东方动漫社</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="images/logo.jpg">
+</head>
+<body>
+
+<!-- Login Page -->
+<div class="admin-login-wrap" id="loginWrap">
+  <div class="admin-login-box">
+    <h2>🔐 管理员登录</h2>
+    <div class="form-group">
+      <label>账号</label>
+      <input type="text" id="loginUser" placeholder="请输入管理员账号" autocomplete="username">
+    </div>
+    <div class="form-group">
+      <label>密码</label>
+      <input type="password" id="loginPass" placeholder="请输入密码" autocomplete="current-password">
+    </div>
+    <button class="login-btn" id="loginBtn">登 录</button>
+    <div class="login-error" id="loginError"></div>
+  </div>
+</div>
+
+<!-- Dashboard -->
+<div class="admin-dashboard" id="dashboard">
+  <div class="admin-topbar">
+    <h1>⚙️ 管理后台</h1>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <a href="index.html" style="font-size:13px;color:var(--text-muted);">← 返回首页</a>
+      <button class="logout-btn" id="logoutBtn">退出登录</button>
+    </div>
+  </div>
+
+  <div class="admin-tabs">
+    <button class="admin-tab active" data-tab="monthlyPanel">📖 月刊发布</button>
+    <button class="admin-tab" data-tab="reviewPanel">✅ 创作审核</button>
+    <button class="admin-tab" data-tab="marketReviewPanel">🏪 集市审核</button>
+    <button class="admin-tab" data-tab="activityPanel">📅 活动管理</button>
+    <button class="admin-tab" data-tab="userSearchPanel">🔍 用户查询</button>
+  </div>
+
+  <!-- Monthly Publish Panel -->
+  <div class="admin-panel active" id="monthlyPanel">
+    <h3>发布新刊</h3>
+    <div class="form-row-inline">
+      <div class="form-group">
+        <label>刊号标题</label>
+        <input type="text" id="monthlyTitle" placeholder="例：Vol.13 — 七月新番特辑">
+      </div>
+      <div class="form-group">
+        <label>发布年月</label>
+        <input type="month" id="monthlyDate">
+      </div>
+      <div class="form-group">
+        <label>CN 署名</label>
+        <input type="text" id="monthlyCN" placeholder="你的圈名/笔名" maxlength="30">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>封面图片</label>
+      <div class="upload-area" id="coverUploadArea">
+        <div class="upload-icon">🖼️</div>
+        <p>点击上传封面图片（jpg/png）</p>
+        <input type="file" id="coverFile" accept="image/*">
+      </div>
+      <div class="upload-preview" id="coverPreview" style="display:none;">
+        <span id="coverFileName"></span>
+        <span class="remove-file" id="removeCover">✕</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>正文内容</label>
+      <textarea id="monthlyContent" placeholder="在此编写月刊正文...&#10;&#10;💡 提示：&#10;· 空行分隔段落&#10;· 使用 {{img:0}}、{{img:1}} 在文中插入下方上传的图片&#10;· 第一个上传的图片编号为 0" style="min-height:240px;width:100%;padding:12px;border:1px solid var(--border);border-radius:8px;font-size:14px;font-family:var(--font-sans);resize:vertical;outline:none;line-height:1.8;"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label>正文配图（可多张，按上传顺序编号）</label>
+      <div class="upload-area" id="contentImgUploadArea">
+        <div class="upload-icon">🖼️</div>
+        <p>点击上传配图，可在正文中用 {{img:0}}、{{img:1}} 引用</p>
+        <input type="file" id="contentImages" accept="image/*" multiple>
+      </div>
+      <div class="img-previews" id="contentImgPreviews"></div>
+    </div>
+
+    <button class="publish-btn" id="publishMonthlyBtn">发布月刊</button>
+    <button class="btn btn-outline" id="cancelMonthlyEdit" style="display:none;margin-left:8px;font-size:13px;">取消编辑</button>
+    <div class="admin-msg" id="monthlyMsg"></div>
+
+    <h3 style="margin-top:32px;">已发布月刊（<span id="monthlyCount">0</span>）</h3>
+    <div id="monthlyIssueList" style="margin-top:12px;">
+      <div class="review-empty">暂无已发布的月刊~</div>
+    </div>
+  </div>
+
+  <!-- Review Panel (创作广场) -->
+  <div class="admin-panel" id="reviewPanel">
+    <h3>待审核投稿（<span id="pendingCount">0</span>）</h3>
+    <div class="review-list" id="reviewList">
+      <div class="review-empty">暂无待审核的投稿~</div>
+    </div>
+  </div>
+
+  <!-- Market Review Panel -->
+  <div class="admin-panel" id="marketReviewPanel">
+    <h3>待审核物品（<span id="marketPendingCount">0</span>）</h3>
+    <div class="review-list" id="marketReviewList">
+      <div class="review-empty">暂无待审核的集市物品~</div>
+    </div>
+  </div>
+
+  <!-- Activity Management Panel -->
+  <div class="admin-panel" id="activityPanel">
+    <h3>发布活动</h3>
+    <div class="form-row-inline">
+      <div class="form-group" style="flex:2;">
+        <label>活动标题</label>
+        <input type="text" id="activityTitle" placeholder="例：夏日祭 · 社团线下聚会">
+      </div>
+      <div class="form-group" style="flex:1;">
+        <label>活动日期</label>
+        <input type="date" id="activityDate">
+      </div>
+      <div class="form-group" style="flex:1;">
+        <label>状态</label>
+        <select id="activityStatus" style="padding:9px 12px;border:1px solid var(--border);border-radius:8px;font-size:14px;width:100%;outline:none;">
+          <option value="upcoming">即将开始</option>
+          <option value="ongoing">进行中</option>
+          <option value="past">已结束</option>
+        </select>
+      </div>
+      <div class="form-group" style="flex:1;">
+        <label>CN 署名</label>
+        <input type="text" id="activityCN" placeholder="你的圈名/笔名" maxlength="30">
+      </div>
+    </div>
+    <div class="form-group">
+      <label>活动描述</label>
+      <textarea id="activityDesc" placeholder="描述活动内容..." style="min-height:100px;width:100%;padding:12px;border:1px solid var(--border);border-radius:8px;font-size:14px;font-family:var(--font-sans);resize:vertical;outline:none;"></textarea>
+    </div>
+    <button class="publish-btn" id="publishActivityBtn">发布活动</button>
+    <div class="admin-msg" id="activityMsg"></div>
+
+    <h3 style="margin-top:32px;">已有活动（<span id="activityCount">0</span>）</h3>
+    <div id="activityList" style="margin-top:12px;">
+      <div class="review-empty">暂无活动~</div>
+    </div>
+  </div>
+
+  <!-- User Search Panel -->
+  <div class="admin-panel" id="userSearchPanel">
+    <h3>用户查询</h3>
+    <div style="display:flex;gap:8px;margin-bottom:16px;">
+      <input type="text" id="userSearchInput" placeholder="输入用户名搜索..." style="flex:1;padding:8px 12px;border:1px solid var(--border);border-radius:8px;font-size:14px;outline:none;">
+      <button class="btn btn-primary" id="btnUserSearch" style="font-size:13px;">搜索</button>
+    </div>
+    <div id="userSearchResults"></div>
+  </div>
+</div>
+
+<script src="js/main.js"></script>
+<script>
+// Admin uses API auth
+var ADMIN_USER = 'dfdm';
+var ADMIN_PASS = '114514';
+
+// Auto-login with admin credentials
+function adminLogin() {
+  if (API.token) {
+    API.get('/api/auth/me').then(function(d) {
+      if (d.user && d.user.role === 'admin') { showDashboard(); return; }
+      doAdminLogin();
+    }).catch(function() { doAdminLogin(); });
+  } else {
+    doAdminLogin();
+  }
+}
+
+function doAdminLogin() {
+  API.post('/api/auth/login', { username: ADMIN_USER, password: ADMIN_PASS }).then(function(d) {
+    if (d.token) { API.setToken(d.token); currentUser = d.user; showDashboard(); }
+    else { document.getElementById('loginError').textContent = '自动登录失败'; }
+  }).catch(function() { document.getElementById('loginError').textContent = '服务器连接失败'; });
+}
+// ---- Login ----
+var loginWrap = document.getElementById('loginWrap');
+var dashboard = document.getElementById('dashboard');
+var loginError = document.getElementById('loginError');
+
+function showDashboard() {
+  loginWrap.style.display = 'none';
+  dashboard.classList.add('active');
+  renderReviewList();
+  renderMarketReviewList();
+}
+
+// Auto-login on page load
+adminLogin();
+
+// Manual login form
+document.getElementById('loginBtn').addEventListener('click', function() {
+  var u = document.getElementById('loginUser').value.trim();
+  var p = document.getElementById('loginPass').value.trim();
+  API.post('/api/auth/login', { username: u, password: p }).then(function(d) {
+    if (d.token) { API.setToken(d.token); currentUser = d.user; loginError.textContent = ''; showDashboard(); }
+    else { loginError.textContent = d.error || '登录失败'; }
+  }).catch(function() { loginError.textContent = '服务器连接失败'; });
+});
+
+document.getElementById('loginPass').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') document.getElementById('loginBtn').click();
+});
+
+document.getElementById('logoutBtn').addEventListener('click', function() {
+  API.clearToken(); currentUser = null; location.reload();
+});
+
+// ---- Tabs ----
+document.querySelectorAll('.admin-tab').forEach(function(tab) {
+  tab.addEventListener('click', function() {
+    document.querySelectorAll('.admin-tab').forEach(function(t) { t.classList.remove('active'); });
+    this.classList.add('active');
+    document.querySelectorAll('.admin-panel').forEach(function(p) { p.classList.remove('active'); });
+    document.getElementById(this.dataset.tab).classList.add('active');
+  });
+});
+
+// ---- File Upload UI ----
+function setupFileUpload(areaId, fileInputId, previewId, nameId, removeId) {
+  const area = document.getElementById(areaId);
+  const input = document.getElementById(fileInputId);
+  const preview = document.getElementById(previewId);
+  const nameEl = document.getElementById(nameId);
+  const removeBtn = document.getElementById(removeId);
+  area.addEventListener('click', () => input.click());
+  input.addEventListener('change', () => {
+    if (input.files[0]) {
+      nameEl.textContent = input.files[0].name;
+      preview.style.display = 'flex';
+    }
+  });
+  removeBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    input.value = '';
+    preview.style.display = 'none';
+  });
+}
+
+setupFileUpload('coverUploadArea', 'coverFile', 'coverPreview', 'coverFileName', 'removeCover');
+
+// Content image uploads
+var contentImages = [];
+var contentImgInput = document.getElementById('contentImages');
+var contentImgPreviews = document.getElementById('contentImgPreviews');
+var contentImgUpload = document.getElementById('contentImgUploadArea');
+
+if (contentImgUpload && contentImgInput) {
+  contentImgUpload.addEventListener('click', function() { contentImgInput.click(); });
+  contentImgInput.addEventListener('change', function() {
+    Array.from(contentImgInput.files).forEach(function(file) {
+      var reader = new FileReader();
+      reader.onload = function() {
+        contentImages.push(reader.result);
+        renderContentImgPreviews();
+      };
+      reader.readAsDataURL(file);
+    });
+    contentImgInput.value = '';
+  });
+}
+
+function renderContentImgPreviews() {
+  if (!contentImgPreviews) return;
+  contentImgPreviews.innerHTML = contentImages.map(function(src, i) {
+    return '<div class="img-preview-item">' +
+      '<img src="' + src + '" alt="">' +
+      '<button class="remove-img" data-index="' + i + '">&times;</button>' +
+      '<span style="position:absolute;bottom:2px;left:2px;background:#333;color:#fff;font-size:9px;padding:0 4px;border-radius:2px;">img:' + i + '</span>' +
+      '</div>';
+  }).join('');
+  contentImgPreviews.querySelectorAll('.remove-img').forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      var idx = parseInt(this.dataset.index);
+      contentImages.splice(idx, 1);
+      renderContentImgPreviews();
+    });
+  });
+}
+
+// ---- Publish Monthly ----
+var publishBtn = document.getElementById('publishMonthlyBtn');
+var monthlyMsg = document.getElementById('monthlyMsg');
+var cancelBtn = document.getElementById('cancelMonthlyEdit');
+
+function showMsg(el, type, text) {
+  el.textContent = text;
+  el.className = 'admin-msg ' + type;
+  clearTimeout(el._timeout);
+  el._timeout = setTimeout(function() { el.className = 'admin-msg'; el.textContent = ''; }, 5000);
+}
+
+function clearMonthlyForm() {
+  document.getElementById('monthlyTitle').value = '';
+  document.getElementById('monthlyDate').value = '';
+  document.getElementById('monthlyContent').value = '';
+  document.getElementById('coverFile').value = '';
+  var cnEl = document.getElementById('monthlyCN'); if (cnEl) cnEl.value = '';
+  var cp = document.getElementById('coverPreview'); if (cp) cp.style.display = 'none';
+  contentImages = []; renderContentImgPreviews();
+  delete publishBtn._editingId;
+  publishBtn.textContent = '发布月刊';
+  cancelBtn.style.display = 'none';
+}
+
+cancelBtn.addEventListener('click', clearMonthlyForm);
+
+if (publishBtn) {
+  publishBtn.addEventListener('click', function() {
+    var titleEl = document.getElementById('monthlyTitle');
+    var dateEl = document.getElementById('monthlyDate');
+    var contentEl = document.getElementById('monthlyContent');
+    var coverInput = document.getElementById('coverFile');
+    var title = titleEl ? titleEl.value.trim() : '';
+    var dateVal = dateEl ? dateEl.value : '';
+    var contentText = contentEl ? contentEl.value.trim() : '';
+    var coverFile = coverInput ? coverInput.files[0] : null;
+    var cn = document.getElementById('monthlyCN') ? document.getElementById('monthlyCN').value.trim() : '';
+    var isEdit = !!this._editingId;
+
+    if (!title) { showMsg(monthlyMsg, 'error', '请输入刊号标题'); return; }
+    if (!dateVal) { showMsg(monthlyMsg, 'error', '请选择发布年月'); return; }
+    if (!isEdit && !coverFile) { showMsg(monthlyMsg, 'error', '请上传封面图片'); return; }
+    if (!contentText) { showMsg(monthlyMsg, 'error', '请输入正文内容'); return; }
+
+    var storedImages = contentImages.slice();
+    var storedContentText = contentText;
+    this.disabled = true; var self = this;
+
+    function doSubmit(coverData) {
+      var payload = { title: title, publishDate: dateVal, content: storedContentText, images: storedImages, cn: cn };
+      if (coverData !== undefined) payload.cover = coverData;
+      var apiCall = isEdit ? API.put('/api/monthly/' + self._editingId, payload) : API.post('/api/monthly', payload);
+      var label = isEdit ? '更新' : '发布';
+      self.textContent = label + '中...';
+      apiCall.then(function(d) {
+        if (d.error) { showMsg(monthlyMsg, 'error', d.error); self.disabled = false; self.textContent = isEdit ? '更新月刊' : '发布月刊'; return; }
+        clearMonthlyForm();
+        showMsg(monthlyMsg, 'success', '月刊' + label + '成功！');
+        self.disabled = false; self.textContent = '发布月刊';
+        renderMonthlyList();
+      }).catch(function() { showMsg(monthlyMsg, 'error', label + '失败'); self.disabled = false; self.textContent = isEdit ? '更新月刊' : '发布月刊'; });
+    }
+
+    if (coverFile) {
+      var coverReader = new FileReader();
+      coverReader.onload = function() { doSubmit(coverReader.result); };
+      coverReader.onerror = function() { showMsg(monthlyMsg, 'error', '封面读取失败'); self.disabled = false; };
+      coverReader.readAsDataURL(coverFile);
+    } else {
+      doSubmit(undefined);
+    }
+  });
+}
+
+function renderMonthlyList() {
+  API.get('/api/monthly').then(function(data) {
+    var list = document.getElementById('monthlyIssueList');
+    document.getElementById('monthlyCount').textContent = data.length;
+    if (!data.length) { list.innerHTML = '<div class="review-empty">暂无已发布的月刊~</div>'; return; }
+    list.innerHTML = data.map(function(m) {
+      return '<div class="review-item"><div class="review-info" style="flex:1;">' +
+        '<div class="review-name">' + escapeHTML(m.title) + '</div>' +
+        '<div style="font-size:12px;color:var(--text-muted);">' + (m.publish_date || '') + (m.cn ? ' · CN：「' + escapeHTML(m.cn) + '」' : '') + '</div>' +
+        '<div style="display:flex;gap:6px;margin-top:4px;">' +
+        '<button class="btn-approve" style="font-size:11px;padding:3px 10px;" onclick="editMonthly(' + m.id + ')">编辑</button>' +
+        '<button class="btn-reject" style="font-size:11px;padding:3px 10px;" onclick="deleteMonthly(' + m.id + ')">删除</button>' +
+        '</div></div></div>';
+    }).join('');
+  });
+}
+
+window.editMonthly = function(id) {
+  API.get('/api/monthly').then(function(data) {
+    var m = data.find(function(x) { return x.id === id; });
+    if (!m) return;
+    document.getElementById('monthlyTitle').value = m.title || '';
+    document.getElementById('monthlyDate').value = m.publish_date || '';
+    document.getElementById('monthlyContent').value = m.content || '';
+    var cnEl = document.getElementById('monthlyCN'); if (cnEl) cnEl.value = m.cn || '';
+    contentImages = m.images || [];
+    renderContentImgPreviews();
+    // Keep existing cover unless re-uploaded
+    var cp = document.getElementById('coverPreview');
+    var nameEl = document.getElementById('coverFileName');
+    if (cp && nameEl && m.cover) {
+      nameEl.textContent = '[现有封面，可选上传新封面替换]';
+      cp.style.display = 'flex';
+    }
+    publishBtn.textContent = '更新月刊';
+    publishBtn._editingId = id;
+    cancelBtn.style.display = 'inline-block';
+    document.getElementById('monthlyTitle').scrollIntoView({ behavior: 'smooth' });
+  });
+};
+
+window.deleteMonthly = function(id) {
+  if (!confirm('确定删除该月刊？')) return;
+  API.del('/api/monthly/' + id).then(function() { renderMonthlyList(); });
+};
+
+// Initial load when switching to monthly tab
+renderMonthlyList();
+
+// ---- Review Fanworks ----
+function renderReviewList() {
+  API.get('/api/fanworks/pending').then(function(data) {
+    var pending = Array.isArray(data) ? data : [];
+    document.getElementById('pendingCount').textContent = pending.length;
+    var list = document.getElementById('reviewList');
+    if (pending.length === 0) { list.innerHTML = '<div class="review-empty">暂无待审核的投稿~</div>'; return; }
+    list.innerHTML = pending.map(function(s) {
+      return '<div class="review-item"><div class="review-thumb">' +
+        (s.images && s.images[0] ? '<img src="' + s.images[0] + '" alt="">' : '') +
+        '</div><div class="review-info"><div class="review-tags">' +
+        '<span class="review-tag">' + escapeHTML(s.tag1) + '</span><span class="review-tag">' + escapeHTML(s.tag2) + '</span>' +
+        '</div><div class="review-name">' + escapeHTML(s.author_name || '') + '</div>' +
+        '<div class="review-text">' + escapeHTML(s.text) + '</div>' +
+        '<div class="review-actions">' +
+        '<button class="btn-approve" onclick="approveSubmission(' + s.id + ')">通过</button>' +
+        '<button class="btn-reject" onclick="rejectSubmission(' + s.id + ')">拒绝</button></div></div></div>';
+    }).join('');
+  });
+}
+
+window.approveSubmission = function(id) { API.put('/api/fanworks/' + id + '/approve').then(renderReviewList); };
+window.rejectSubmission = function(id) { API.put('/api/fanworks/' + id + '/reject').then(renderReviewList); };
+
+// ---- Review Market ----
+function renderMarketReviewList() {
+  API.get('/api/market/pending').then(function(data) {
+    var pending = Array.isArray(data) ? data : [];
+    document.getElementById('marketPendingCount').textContent = pending.length;
+    var list = document.getElementById('marketReviewList');
+    if (!list) return;
+    if (pending.length === 0) { list.innerHTML = '<div class="review-empty">暂无待审核的集市物品~</div>'; return; }
+    list.innerHTML = pending.map(function(s) {
+      return '<div class="review-item"><div class="review-thumb">' +
+        (s.images && s.images[0] ? '<img src="' + s.images[0] + '" alt="">' : '') +
+        '</div><div class="review-info"><div class="review-tags">' +
+        '<span class="review-tag">' + escapeHTML(s.tag) + '</span>' +
+        (s.ip ? '<span class="review-tag" style="background:#e3f2fd;color:#1e88e5;">' + escapeHTML(s.ip) + '</span>' : '') +
+        '</div><div class="review-name">' + escapeHTML(s.title) + ' — ' + escapeHTML(s.price) + '</div>' +
+        '<div style="font-size:12px;color:var(--text-muted);">QQ：' + escapeHTML(s.qq) + '</div>' +
+        '<div class="review-text">' + escapeHTML(s.text) + '</div>' +
+        '<div class="review-actions">' +
+        '<button class="btn-approve" onclick="approveMarketItem(' + s.id + ')">通过</button>' +
+        '<button class="btn-reject" onclick="rejectMarketItem(' + s.id + ')">拒绝</button></div></div></div>';
+    }).join('');
+  });
+}
+
+window.approveMarketItem = function(id) { API.put('/api/market/' + id + '/approve').then(renderMarketReviewList); };
+window.rejectMarketItem = function(id) { API.put('/api/market/' + id + '/reject').then(renderMarketReviewList); };
+
+// ---- User Search ----
+document.getElementById('btnUserSearch').addEventListener('click', function() {
+  var q = document.getElementById('userSearchInput').value.trim();
+  if (!q) return;
+  API.get('/api/auth/users/search?q=' + encodeURIComponent(q)).then(function(data) {
+    var users = data.users || [];
+    var container = document.getElementById('userSearchResults');
+    if (users.length === 0) {
+      container.innerHTML = '<p style="text-align:center;padding:20px;color:var(--text-muted);">未找到用户</p>';
+      return;
+    }
+    container.innerHTML = users.map(function(u) {
+      var badge = '';
+      if (u.title) { badge = '<span class="user-badge ' + (u.title==='社长'?'badge-leader':'badge-custom') + '">' + escapeHTML(u.title) + '</span>'; }
+      else { badge = '<span class="user-badge badge-member">东方社员</span>'; }
+      return '<div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:8px;">' +
+        '<strong>' + escapeHTML(u.username) + '</strong> ' + badge +
+        '<span style="font-size:11px;color:var(--text-muted);">(' + (u.role === 'admin' ? '管理员' : '社员') + ')</span>' +
+        '<div style="font-size:12px;color:var(--text-light);margin-top:4px;">' +
+        'ID: ' + u.id + ' | QQ: ' + escapeHTML(u.qq || '未填写') + ' | 手机: ' + escapeHTML(u.phone || '未填写') +
+        ' | 注册: ' + u.created_at + '</div>' +
+        '<div style="display:flex;gap:6px;align-items:center;margin-top:8px;">' +
+        '<input type="text" class="title-input" data-uid="' + u.id + '" value="' + escapeHTML(u.title || '') + '" placeholder="设置称号（空=东方社员，填"社长"=黄色）" style="flex:1;padding:5px 8px;border:1px solid var(--border);border-radius:4px;font-size:12px;outline:none;">' +
+        '<button class="btn btn-sm btn-primary btn-set-title" data-uid="' + u.id + '" style="font-size:11px;">设置</button>' +
+        '</div>' +
+        '<a href="profile.html?id=' + u.id + '" target="_blank" style="font-size:12px;color:var(--accent);">查看主页 →</a>' +
+        '</div>';
+    }).join('');
+
+    // Title set handlers
+    container.querySelectorAll('.btn-set-title').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var uid = this.dataset.uid;
+        var input = container.querySelector('.title-input[data-uid="' + uid + '"]');
+        if (!input) return;
+        var title = input.value.trim();
+        var self = this;
+        self.disabled = true; self.textContent = '...';
+        API.put('/api/auth/users/' + uid + '/title', { title: title }).then(function(d) {
+          self.disabled = false; self.textContent = '设置';
+          if (d.error) { alert(d.error); return; }
+          document.getElementById('btnUserSearch').click(); // refresh
+        });
+      });
+    });
+  });
+});
+
+document.getElementById('userSearchInput').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') document.getElementById('btnUserSearch').click();
+});
+
+// ---- Activity Management ----
+function renderActivityList() {
+  API.get('/api/activities').then(function(data) {
+    var list = document.getElementById('activityList');
+    document.getElementById('activityCount').textContent = data.length;
+    if (!data.length) { list.innerHTML = '<div class="review-empty">暂无活动~</div>'; return; }
+    var statusLabel = { upcoming: '即将开始', ongoing: '进行中', past: '已结束' };
+    var statusColors = { upcoming: '#43a047', ongoing: '#fb8c00', past: '#757575' };
+    list.innerHTML = data.map(function(a) {
+      return '<div class="review-item"><div class="review-info" style="flex:1;">' +
+        '<div class="review-name">' + escapeHTML(a.title) + '</div>' +
+        '<div style="font-size:12px;color:var(--text-muted);">' + a.event_date + '</div>' +
+        '<div class="review-text">' + escapeHTML(a.description || '').substring(0, 120) + '</div>' +
+        '<div style="display:flex;gap:6px;align-items:center;margin-top:4px;">' +
+        '<span style="display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;color:#fff;background:' + (statusColors[a.status] || '#757575') + ';">' + (statusLabel[a.status] || a.status) + '</span>' +
+        '<button class="btn-approve" style="font-size:11px;padding:3px 10px;" onclick="editActivity(' + a.id + ')">编辑</button>' +
+        '<button class="btn-reject" style="font-size:11px;padding:3px 10px;" onclick="deleteActivity(' + a.id + ')">删除</button>' +
+        '</div></div></div>';
+    }).join('');
+  });
+}
+
+// Load activities when switching to activity tab
+document.querySelector('.admin-tab[data-tab="activityPanel"]').addEventListener('click', function() {
+  renderActivityList();
+});
+renderActivityList();
+
+document.getElementById('publishActivityBtn').addEventListener('click', function() {
+  var btn = this;
+  var title = document.getElementById('activityTitle').value.trim();
+  var date = document.getElementById('activityDate').value;
+  var desc = document.getElementById('activityDesc').value.trim();
+  var status = document.getElementById('activityStatus').value;
+  var cn = document.getElementById('activityCN') ? document.getElementById('activityCN').value.trim() : '';
+  var msg = document.getElementById('activityMsg');
+  if (!title) { showMsg(msg, 'error', '请输入活动标题'); return; }
+  if (!date) { showMsg(msg, 'error', '请选择日期'); return; }
+  btn.disabled = true;
+  var isEdit = !!btn._editingId;
+  if (isEdit) {
+    btn.textContent = '更新中...';
+    API.put('/api/activities/' + btn._editingId, { title: title, eventDate: date, description: desc, status: status, cn: cn }).then(function(d) {
+      if (d.error) { showMsg(msg, 'error', d.error); btn.disabled = false; btn.textContent = '更新活动'; return; }
+      clearActivityForm();
+      delete btn._editingId;
+      btn.textContent = '发布活动';
+      btn.disabled = false;
+      showMsg(msg, 'success', '活动更新成功！');
+      renderActivityList();
+    });
+  } else {
+    btn.textContent = '发布中...';
+    API.post('/api/activities', { title: title, eventDate: date, description: desc, status: status, cn: cn }).then(function(d) {
+      if (d.error) { showMsg(msg, 'error', d.error); btn.disabled = false; btn.textContent = '发布活动'; return; }
+      clearActivityForm();
+      showMsg(msg, 'success', '活动发布成功！');
+      btn.disabled = false; btn.textContent = '发布活动';
+      renderActivityList();
+    });
+  }
+});
+
+function clearActivityForm() {
+  document.getElementById('activityTitle').value = '';
+  document.getElementById('activityDate').value = '';
+  document.getElementById('activityDesc').value = '';
+  document.getElementById('activityStatus').value = 'upcoming';
+  var cnEl = document.getElementById('activityCN'); if (cnEl) cnEl.value = '';
+}
+
+window.editActivity = function(id) {
+  API.get('/api/activities/' + id).then(function(a) {
+    document.getElementById('activityTitle').value = a.title || '';
+    document.getElementById('activityDate').value = a.event_date || '';
+    document.getElementById('activityDesc').value = a.description || '';
+    document.getElementById('activityStatus').value = a.status || 'upcoming';
+    var cnEl = document.getElementById('activityCN'); if (cnEl) cnEl.value = a.cn || '';
+    var btn = document.getElementById('publishActivityBtn');
+    btn.textContent = '更新活动';
+    btn._editingId = id;
+    document.querySelector('.admin-tab[data-tab="activityPanel"]').click();
+    document.getElementById('activityTitle').scrollIntoView({ behavior: 'smooth' });
+  });
+};
+
+window.deleteActivity = function(id) {
+  if (!confirm('确定删除该活动？')) return;
+  API.del('/api/activities/' + id).then(function() { renderActivityList(); });
+};
+
+function escapeHTML(str) {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+</script>
+</body>
+</html>
