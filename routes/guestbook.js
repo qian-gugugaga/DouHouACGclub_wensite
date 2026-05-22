@@ -4,7 +4,7 @@ const { authRequired } = require('../middleware/auth');
 const router = express.Router();
 
 router.get('/', async (req, res) => {
-  const result = await db.execute("SELECT g.*, u.username as author_name, u.title as author_title FROM guestbook_messages g LEFT JOIN users u ON g.author_id = u.id ORDER BY g.created_at DESC");
+  const result = await db.execute("SELECT g.*, u.username as author_name, u.title as author_title, (SELECT COUNT(*) FROM post_likes WHERE post_id = g.id) as likes FROM guestbook_messages g LEFT JOIN users u ON g.author_id = u.id ORDER BY g.created_at DESC");
   const messages = result.rows;
   const output = await Promise.all(messages.map(async (m) => {
     let replyTo = null;
@@ -66,6 +66,21 @@ router.delete('/:id', authRequired, async (req, res) => {
   }
   await deleteDescendants(req.params.id);
   res.json({ ok: true });
+});
+
+// Like/unlike a post
+router.post('/:id/like', authRequired, async (req, res) => {
+  const postId = req.params.id;
+  const existing = (await db.execute('SELECT id FROM post_likes WHERE user_id = ? AND post_id = ?', [req.user.id, postId])).rows[0];
+  if (existing) {
+    // Unlike
+    await db.execute('DELETE FROM post_likes WHERE id = ?', [existing.id]);
+  } else {
+    // Like
+    await db.execute('INSERT INTO post_likes (user_id, post_id) VALUES (?, ?)', [req.user.id, postId]);
+  }
+  const count = (await db.execute('SELECT COUNT(*) as c FROM post_likes WHERE post_id = ?', [postId])).rows[0];
+  res.json({ liked: !existing, likes: Number(count.c) });
 });
 
 module.exports = router;
