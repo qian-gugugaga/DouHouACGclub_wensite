@@ -491,11 +491,14 @@ window.rejectMarketItem = function(id) { API.put('/api/market/' + id + '/reject'
 // ---- User Search ----
 document.getElementById('btnUserSearch').addEventListener('click', function() {
   var q = document.getElementById('userSearchInput').value.trim();
-  API.get('/api/auth/users/search?q=' + encodeURIComponent(q)).then(function(data) {
+  var url = '/api/auth/users/search?q=' + encodeURIComponent(q);
+  document.getElementById('userSearchResults').innerHTML = '<p style="text-align:center;padding:20px;color:var(--text-muted);">搜索中...</p>';
+  API.get(url).then(function(data) {
     var users = data.users || [];
     var container = document.getElementById('userSearchResults');
+    if (!data || data.error) { container.innerHTML = '<p style="color:#c62828;">' + escapeHTML(data && data.error || '未知错误') + '</p>'; return; }
     if (users.length === 0) {
-      container.innerHTML = '<p style="text-align:center;padding:20px;color:var(--text-muted);">未找到用户</p>';
+      container.innerHTML = '<p style="text-align:center;padding:20px;color:var(--text-muted);">未找到用户（共加载 ' + (data.users ? data.users.length : 0) + ' 条）</p>';
       return;
     }
     container.innerHTML = users.map(function(u) {
