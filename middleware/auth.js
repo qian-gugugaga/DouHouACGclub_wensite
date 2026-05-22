@@ -1,18 +1,20 @@
-const db = require('../db');
+const { db } = require('../db');
 
-function authRequired(req, res, next) {
+async function authRequired(req, res, next) {
   const token = req.headers.authorization || req.query.token;
   if (!token) return res.status(401).json({ error: '请先登录' });
-  const session = db.prepare('SELECT user_id FROM sessions WHERE token = ?').get(token);
+  const result = await db.execute('SELECT user_id FROM sessions WHERE token = ?', [token]);
+  const session = result.rows[0];
   if (!session) return res.status(401).json({ error: '登录已过期' });
-  const user = db.prepare('SELECT id, username, role FROM users WHERE id = ?').get(session.user_id);
+  const userResult = await db.execute('SELECT id, username, role FROM users WHERE id = ?', [session.user_id]);
+  const user = userResult.rows[0];
   if (!user) return res.status(401).json({ error: '用户不存在' });
   req.user = user;
   next();
 }
 
-function adminRequired(req, res, next) {
-  authRequired(req, res, () => {
+async function adminRequired(req, res, next) {
+  await authRequired(req, res, async () => {
     if (req.user.role !== 'admin') return res.status(403).json({ error: '需要管理员权限' });
     next();
   });

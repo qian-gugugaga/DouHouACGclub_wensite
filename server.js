@@ -13,7 +13,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Initialize database (creates tables + admin account)
-require('./db');
+const { initDB } = require('./db');
 
 // API Routes
 app.use('/api/auth', require('./routes/auth'));
@@ -35,6 +35,8 @@ app.use((req, res) => {
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log('东方动漫社 · 神秘据点 服务端已启动: http://localhost:' + PORT);
+initDB().then(() => {
+  app.listen(PORT, () => {
+    console.log('东方动漫社 · 神秘据点 服务端已启动: http://localhost:' + PORT);
+  });
 });

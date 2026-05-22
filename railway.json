@@ -4,8 +4,5 @@
   },
   "deploy": {
     "startCommand": "npm start"
-  },
-  "volumes": {
-    "data": "/app/data"
   }
 }
