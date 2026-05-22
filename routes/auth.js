@@ -83,8 +83,9 @@ router.put('/security/phone', authRequired, async (req, res) => {
 router.get('/users/search', authRequired, async (req, res) => {
   if (req.user.role !== 'admin') return res.status(403).json({ error: '需要管理员权限' });
   const { q } = req.query;
-  if (!q) return res.json({ users: [] });
-  const users = (await db.execute('SELECT id, username, role, qq, phone, title, created_at FROM users WHERE username LIKE ? LIMIT 20', ['%' + q + '%'])).rows;
+  const users = q
+    ? (await db.execute('SELECT id, username, role, qq, phone, title, created_at FROM users WHERE username LIKE ? LIMIT 50', ['%' + q + '%'])).rows
+    : (await db.execute('SELECT id, username, role, qq, phone, title, created_at FROM users ORDER BY id DESC LIMIT 50')).rows;
   res.json({ users });
 });
 
