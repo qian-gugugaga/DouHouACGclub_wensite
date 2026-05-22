@@ -775,19 +775,70 @@ ul, ol { list-style: none; }
   font-size: 13px;
   color: var(--text-muted);
 }
-.masonry-item .masonry-info .actions button {
-  background: none;
+/* --- Like Button · Bilibili Style --- */
+.like-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: transparent;
   border: none;
   cursor: pointer;
-  color: var(--text-muted);
+  color: #9499a0;
   font-size: 13px;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  transition: color var(--transition);
+  padding: 4px 12px;
+  border-radius: 20px;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  user-select: none;
+  outline: none;
+  line-height: 1;
 }
-.masonry-item .masonry-info .actions button:hover { color: var(--accent); }
-.masonry-item .masonry-info .actions button.liked { color: var(--accent); }
+.like-btn svg {
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  fill: transparent;
+  width: 16px;
+  height: 16px;
+}
+.like-btn .count {
+  font-weight: 500;
+  min-width: 16px;
+  text-align: center;
+  transition: transform 0.25s ease;
+}
+.like-btn:hover {
+  color: #fb7299;
+  background: rgba(251, 114, 153, 0.06);
+}
+.like-btn:hover svg {
+  stroke: #fb7299;
+}
+.like-btn.liked {
+  color: #fb7299;
+  background: rgba(251, 114, 153, 0.06);
+}
+.like-btn.liked svg {
+  fill: #fb7299;
+  stroke: #fb7299;
+}
+
+@keyframes likeBounce {
+  0%   { transform: scale(1); }
+  30%  { transform: scale(1.35); }
+  60%  { transform: scale(0.85); }
+  80%  { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+@keyframes countPop {
+  0%   { transform: translateY(0); opacity: 1; }
+  40%  { transform: translateY(-6px); opacity: 0; }
+  60%  { transform: translateY(6px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+.like-btn.bounce svg {
+  animation: likeBounce 0.4s ease;
+}
+.like-btn.bounce .count {
+  animation: countPop 0.35s ease;
+}
 
 /* --- Lightbox --- */
 .lightbox {
@@ -1851,18 +1902,45 @@ img.lazy.loaded {
   border-top: 1px solid var(--border);
 }
 .cm-body .cm-actions button {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 4px;
-  background: none;
+  gap: 5px;
+  background: transparent;
   border: none;
   cursor: pointer;
   font-size: 14px;
-  color: var(--text-muted);
-  transition: color var(--transition);
+  color: #9499a0;
+  padding: 6px 14px;
+  border-radius: 20px;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  line-height: 1;
 }
-.cm-body .cm-actions button:hover { color: var(--accent); }
-.cm-body .cm-actions button.liked { color: var(--accent); }
+.cm-body .cm-actions button svg {
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  fill: transparent;
+  width: 18px;
+  height: 18px;
+}
+.cm-body .cm-actions button .count {
+  font-weight: 500;
+  min-width: 18px;
+  text-align: center;
+}
+.cm-body .cm-actions button:hover {
+  color: #fb7299;
+  background: rgba(251, 114, 153, 0.06);
+}
+.cm-body .cm-actions button:hover svg {
+  stroke: #fb7299;
+}
+.cm-body .cm-actions button.liked {
+  color: #fb7299;
+  background: rgba(251, 114, 153, 0.06);
+}
+.cm-body .cm-actions button.liked svg {
+  fill: #fb7299;
+  stroke: #fb7299;
+}
 
 /* --- Responsive: float button on mobile --- */
 @media (max-width: 900px) {

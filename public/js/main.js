@@ -311,13 +311,21 @@ document.addEventListener('DOMContentLoaded', function() {
     document.addEventListener('keydown', function(e) { if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLb(); });
   }
 
-  // --- Like Button ---
-  document.querySelectorAll('.like-btn').forEach(function(btn) {
-    btn.addEventListener('click', function(e) {
-      e.preventDefault(); e.stopPropagation();
-      this.classList.toggle('liked');
-      var cEl = this.querySelector('.count');
-      if (cEl) { var c = parseInt(cEl.textContent, 10); cEl.textContent = this.classList.contains('liked') ? c + 1 : c - 1; }
+  // --- Like Button (event delegation + bounce animation) ---
+  document.addEventListener('click', function(e) {
+    var btn = e.target.closest('.like-btn');
+    if (!btn) return;
+    e.preventDefault(); e.stopPropagation();
+    if (!API.token) { openAuthModal('login'); return; }
+    var postId = btn.dataset.post;
+    if (!postId) return;
+    var self = btn;
+    self.classList.add('bounce');
+    setTimeout(function() { self.classList.remove('bounce'); }, 400);
+    API.post('/api/guestbook/' + postId + '/like').then(function(d) {
+      if (d.error) return;
+      self.querySelector('.count').textContent = d.likes;
+      if (d.liked) self.classList.add('liked'); else self.classList.remove('liked');
     });
   });
 

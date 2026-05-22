@@ -147,7 +147,7 @@ function loadThreads() {
         '<div style="display:flex;gap:16px;font-size:12px;color:var(--text-muted);align-items:center;">' +
         '<span>' + esc(t.author_name || '匿名') + '</span>' + (typeof titleBadge==='function' ? titleBadge(t.author_title) : '') + '<span>' + t.created_at + '</span>' +
         '<span style="color:var(--accent);font-weight:500;">' + replyCount + ' 回复</span>' +
-        '<button class="like-btn" data-post="' + t.id + '" style="margin-left:auto;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg> <span class="count">' + (t.likes || 0) + '</span></button>' +
+        '<button class="like-btn" data-post="' + t.id + '" style="margin-left:auto;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span class="count">' + (t.likes || 0) + '</span></button>' +
         '</div></div></div></div>';
     }).join('');
 
@@ -163,6 +163,8 @@ function loadThreads() {
         if (!API.token) { openAuthModal('login'); return; }
         var postId = this.dataset.post;
         var self = this;
+        self.classList.add('bounce');
+        setTimeout(function() { self.classList.remove('bounce'); }, 400);
         API.post('/api/guestbook/' + postId + '/like').then(function(d) {
           if (d.error) return;
           self.querySelector('.count').textContent = d.likes;
