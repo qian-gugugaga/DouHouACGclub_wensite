@@ -26,6 +26,7 @@ app.use('/api/activities', require('./routes/activities'));
 app.use('/api/announcements', require('./routes/announcements'));
 app.use('/api/comments', require('./routes/comments'));
 app.use('/api/upload', require('./routes/upload'));
+app.use('/api/stats', require('./routes/stats'));
 
 // SPA fallback
 app.use((req, res) => {

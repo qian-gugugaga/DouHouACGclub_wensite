@@ -88,6 +88,16 @@ async function initDB() {
     id SERIAL PRIMARY KEY, content TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT NOW())`);
 
+  // Site stats
+  await query(`CREATE TABLE IF NOT EXISTS site_stats (
+    id SERIAL PRIMARY KEY, key TEXT UNIQUE NOT NULL,
+    value TEXT NOT NULL, updated_at TIMESTAMP DEFAULT NOW())`);
+  // Seed default stats if empty
+  const statsExist = await query('SELECT id FROM site_stats LIMIT 1');
+  if (statsExist.rows.length === 0) {
+    await query("INSERT INTO site_stats (key, value) VALUES ('members', '328'), ('works', '1247'), ('events', '56'), ('months', '12')");
+  }
+
   // Admin account
   const adminCheck = await query('SELECT id FROM users WHERE username = $1', ['dfdm']);
   if (adminCheck.rows.length === 0) {

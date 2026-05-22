@@ -258,14 +258,14 @@ document.addEventListener('DOMContentLoaded', function() {
     backToTop.addEventListener('click', function() { window.scrollTo({ top: 0, behavior: 'smooth' }); });
   }
 
-  // --- Stats Counter ---
+  // --- Stats Counter (waits for API data, then animates) ---
   var statEls = document.querySelectorAll('#statMembers, #statWorks, #statEvents, #statMonths');
   if (statEls.length > 0) {
     var animateStats = function() {
       statEls.forEach(function(el) {
         var raw = el.textContent.replace(/,/g, '');
         var target = parseInt(raw, 10);
-        if (isNaN(target)) return;
+        if (isNaN(target) || target <= 0) return;
         var current = 0, step = Math.ceil(target / 60);
         var timer = setInterval(function() {
           current += step;
@@ -274,23 +274,24 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 30);
       });
     };
+    var tryAnimate = function(attempts) {
+      attempts = attempts || 0;
+      // Check if API data has arrived
+      var first = document.getElementById('statMembers');
+      if (first && parseInt(first.textContent) > 0) { animateStats(); return; }
+      if (attempts < 20) setTimeout(function() { tryAnimate(attempts + 1); }, 150);
+      else animateStats(); // fallback after 3s
+    };
     var statsSection = document.querySelector('.stats-grid');
     if (statsSection) {
       var observer = new IntersectionObserver(function(entries) {
-        entries.forEach(function(e) { if (e.isIntersecting) { animateStats(); observer.unobserve(e.target); } });
+        entries.forEach(function(e) { if (e.isIntersecting) { tryAnimate(); observer.unobserve(e.target); } });
       }, { threshold: 0.5 });
       observer.observe(statsSection);
-    } else { animateStats(); }
+    } else { tryAnimate(); }
   }
 
-  // --- Footer Stats ---
-  ['todayPV', 'todayUV', 'totalVisits'].forEach(function(id) {
-    var el = document.getElementById(id);
-    if (el) {
-      if (id === 'totalVisits') el.textContent = Math.floor(Math.random() * 50000 + 30000).toLocaleString();
-      else el.textContent = Math.floor(Math.random() * 800 + 200);
-    }
-  });
+  // --- Stats Counter (reads from API-populated values) ---
 
   // --- Lazy Load ---
   document.querySelectorAll('img.lazy').forEach(function(img) {

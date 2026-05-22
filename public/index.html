@@ -215,19 +215,19 @@
       <h3>据点数据</h3>
       <div class="stats-grid">
         <div class="stat-item">
-          <div class="num" id="statMembers">328</div>
+          <div class="num" id="statMembers">--</div>
           <div class="label">社员数</div>
         </div>
         <div class="stat-item">
-          <div class="num" id="statWorks">1,247</div>
+          <div class="num" id="statWorks">--</div>
           <div class="label">同人作品</div>
         </div>
         <div class="stat-item">
-          <div class="num" id="statEvents">56</div>
+          <div class="num" id="statEvents">--</div>
           <div class="label">往期活动</div>
         </div>
         <div class="stat-item">
-          <div class="num" id="statMonths">12</div>
+          <div class="num" id="statMonths">--</div>
           <div class="label">月刊期数</div>
         </div>
       </div>
@@ -255,11 +255,6 @@
 <!-- Footer -->
 <footer class="site-footer">
   <div class="footer-inner">
-    <div class="footer-stats">
-      <span>今日 PV：<strong id="todayPV">--</strong></span>
-      <span>今日 UV：<strong id="todayUV">--</strong></span>
-      <span>总访问量：<strong id="totalVisits">--</strong></span>
-    </div>
     <p>&copy; 2026 东方动漫社 · 神秘据点 | Powered by Love &amp; ACG</p>
   </div>
 </footer>
@@ -366,5 +361,5 @@ fetch('/api/announcements').then(function(r) { return r.json(); }).then(function
   document.getElementById('announceList').innerHTML = '<li style="color:var(--text-muted);">加载失败</li>';
 });
 </script>
-</body>
+<script>fetch("/api/stats").then(function(r){return r.json()}).then(function(s){var el;if(el=document.getElementById("statMembers"))el.textContent=s.members||"328";if(el=document.getElementById("statWorks"))el.textContent=(s.works||"1247").toLocaleString();if(el=document.getElementById("statEvents"))el.textContent=s.events||"56";if(el=document.getElementById("statMonths"))el.textContent=s.months||"12"})</script></body>
 </html>
