@@ -229,7 +229,7 @@ function escapeHTML(str) {
 
 function titleBadge(title) {
   if (!title) return '<span class="user-badge badge-member">东方社员</span>';
-  if (title === '社长') return '<span class="user-badge badge-leader">社长</span>';
+  if (title === '社长' || title === 'legend') return '<span class="user-badge badge-leader">' + escapeHTML(title) + '</span>';
   return '<span class="user-badge badge-custom">' + escapeHTML(title) + '</span>';
 }
 
