@@ -1,0 +1,17 @@
+版本 0.1.2 更新日志
+====================
+
+【新增】
+1. 忘记密码 / 快捷重置密码功能
+   - 登录模态框底部新增"忘记密码？"链接
+   - 点击后切换到重置密码模式，界面显示：用户名、手机号、QQ号、新密码、确认密码
+   - 通过手机号 + QQ号双重验证身份后允许设置新密码
+   - 后端新增 POST /api/auth/reset-password 接口，验证 phone、qq 与用户记录匹配后更新密码
+   - 重置成功后自动清除该用户所有登录会话，强制重新登录（安全措施）
+   - 密码字段标签在重置模式下自动变为"新密码"
+   - 重置成功提示后自动跳转回登录界面
+
+【实现逻辑】
+- 前端：openAuthModal 新增 resetPassword 模式，复用现有表单字段（phoneGroup/qqGroup/pass2Group）
+- 前端：handleAuthSubmit 新增 resetPassword 分支，调用 /api/auth/reset-password 接口
+- 后端：验证用户名存在 → 比对手机号和QQ号 → bcrypt加密新密码 → 更新数据库 → 清除sessions
