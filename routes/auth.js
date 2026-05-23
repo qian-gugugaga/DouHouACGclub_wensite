@@ -31,6 +31,22 @@ router.post('/login', async (req, res) => {
   res.json({ token, user: { id: user.id, username: user.username, role: user.role } });
 });
 
+router.post('/reset-password', async (req, res) => {
+  const { username, phone, qq, newPassword } = req.body;
+  if (!username) return res.status(400).json({ error: '请输入用户名' });
+  if (!phone || !qq) return res.status(400).json({ error: '请输入手机号和QQ号以验证身份' });
+  if (!newPassword || newPassword.length < 4) return res.status(400).json({ error: '新密码至少4位' });
+  const user = (await query('SELECT * FROM users WHERE username = $1', [username])).rows[0];
+  if (!user) return res.status(400).json({ error: '用户名不存在' });
+  if (user.phone && user.phone !== phone) return res.status(400).json({ error: '手机号验证失败' });
+  if (user.qq && user.qq !== qq) return res.status(400).json({ error: 'QQ号验证失败' });
+  const hash = bcrypt.hashSync(newPassword, 10);
+  await query('UPDATE users SET password = $1 WHERE id = $2', [hash, user.id]);
+  // Clear all existing sessions for security
+  await query('DELETE FROM sessions WHERE user_id = $1', [user.id]);
+  res.json({ ok: true });
+});
+
 router.get('/me', authRequired, async (req, res) => {
   const user = (await query('SELECT id, username, role, qq, phone, avatar, title, created_at FROM users WHERE id = $1', [req.user.id])).rows[0];
   res.json({ user });

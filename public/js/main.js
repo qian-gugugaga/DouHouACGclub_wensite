@@ -152,13 +152,14 @@ function openAuthModal(mode) {
       '<button class="auth-close">&times;</button>' +
       '<h2 id="authTitle">登录</h2>' +
       '<div class="form-group"><label>用户名</label><input type="text" id="authUsername" placeholder="请输入用户名" maxlength="20"></div>' +
-      '<div class="form-group"><label>密码</label><input type="password" id="authPassword" placeholder="请输入密码"></div>' +
+      '<div class="form-group" id="pwdGroup"><label id="pwdLabel">密码</label><input type="password" id="authPassword" placeholder="请输入密码"></div>' +
       '<div class="form-group" id="phoneGroup" style="display:none;"><label>手机号</label><input type="text" id="authPhone" placeholder="请输入手机号" maxlength="15"></div>' +
       '<div class="form-group" id="qqGroup" style="display:none;"><label>QQ号</label><input type="text" id="authQQ" placeholder="请输入QQ号" maxlength="20"></div>' +
       '<div class="form-group" id="pass2Group" style="display:none;"><label>确认密码</label><input type="password" id="authPassword2" placeholder="请再次输入密码"></div>' +
       '<button class="auth-submit-btn" id="authSubmitBtn">登 录</button>' +
       '<div class="auth-msg" id="authMsg"></div>' +
       '<div class="auth-switch" id="authSwitch">没有账号？<a id="authSwitchLink">立即注册</a></div>' +
+      '<div class="auth-switch" id="forgotPwdWrap" style="margin-top:6px;"><a id="forgotPwdLink" style="font-size:12px;color:var(--text-muted);cursor:pointer;">忘记密码？</a></div>' +
       '</div>';
     document.body.appendChild(modal);
     modal.querySelector('.auth-close').addEventListener('click', function() { modal.classList.remove('open'); });
@@ -171,19 +172,34 @@ function openAuthModal(mode) {
         openAuthModal(isLogin ? 'register' : 'login');
       }
     });
+    document.getElementById('forgotPwdLink').addEventListener('click', function() {
+      openAuthModal('resetPassword');
+    });
   }
   var title = document.getElementById('authTitle');
   var btn = document.getElementById('authSubmitBtn');
   var switchText = document.getElementById('authSwitch');
+  var forgotWrap = document.getElementById('forgotPwdWrap');
   var msg = document.getElementById('authMsg');
-  if (title) title.textContent = mode === 'register' ? '注册' : '登录';
-  if (btn) btn.textContent = mode === 'register' ? '注 册' : '登 录';
-  if (switchText) switchText.innerHTML = mode === 'register' ? '已有账号？<a id="authSwitchLink">去登录</a>' : '没有账号？<a id="authSwitchLink">立即注册</a>';
+  if (mode === 'resetPassword') {
+    if (title) title.textContent = '重置密码';
+    if (btn) btn.textContent = '重 置';
+    if (switchText) switchText.innerHTML = '想起密码了？<a id="authSwitchLink">去登录</a>';
+    if (forgotWrap) forgotWrap.style.display = 'none';
+  } else {
+    if (title) title.textContent = mode === 'register' ? '注册' : '登录';
+    if (btn) btn.textContent = mode === 'register' ? '注 册' : '登 录';
+    if (switchText) switchText.innerHTML = mode === 'register' ? '已有账号？<a id="authSwitchLink">去登录</a>' : '没有账号？<a id="authSwitchLink">立即注册</a>';
+    if (forgotWrap) forgotWrap.style.display = mode === 'login' ? 'block' : 'none';
+  }
   if (msg) { msg.textContent = ''; msg.className = 'auth-msg'; }
-  var isReg = mode === 'register';
+  var isReg = mode === 'register' || mode === 'resetPassword';
   ['qqGroup','phoneGroup','pass2Group'].forEach(function(id) {
     var el = document.getElementById(id); if (el) el.style.display = isReg ? 'block' : 'none';
   });
+  // Update password label for resetPassword mode
+  var pwdLabel = document.getElementById('pwdLabel');
+  if (pwdLabel) pwdLabel.textContent = mode === 'resetPassword' ? '新密码' : '密码';
   modal._mode = mode;
   modal.classList.add('open');
 }
@@ -201,14 +217,25 @@ function handleAuthSubmit() {
   msg.textContent = ''; msg.className = 'auth-msg';
   if (!username) { msg.textContent = '请输入用户名'; msg.className = 'auth-msg error'; return; }
   if (!password) { msg.textContent = '请输入密码'; msg.className = 'auth-msg error'; return; }
+  if (mode === 'resetPassword') {
+    if (!phone) { msg.textContent = '请输入手机号以验证身份'; msg.className = 'auth-msg error'; return; }
+    if (!qq) { msg.textContent = '请输入QQ号以验证身份'; msg.className = 'auth-msg error'; return; }
+    if (password !== pass2) { msg.textContent = '两次密码输入不一致'; msg.className = 'auth-msg error'; return; }
+  }
   btn.disabled = true; btn.textContent = '处理中...';
-  var endpoint = mode === 'register' ? '/api/auth/register' : '/api/auth/login';
-  API.post(endpoint, { username: username, password: password, password2: pass2, phone: phone, qq: qq }).then(function(data) {
-    btn.disabled = false; btn.textContent = mode === 'register' ? '注 册' : '登 录';
+  var endpoint = mode === 'register' ? '/api/auth/register' : (mode === 'resetPassword' ? '/api/auth/reset-password' : '/api/auth/login');
+  var payload = mode === 'resetPassword'
+    ? { username: username, phone: phone, qq: qq, newPassword: password }
+    : { username: username, password: password, password2: pass2, phone: phone, qq: qq };
+  API.post(endpoint, payload).then(function(data) {
+    btn.disabled = false; btn.textContent = mode === 'register' ? '注 册' : (mode === 'resetPassword' ? '重 置' : '登 录');
     if (data.error) { msg.textContent = data.error; msg.className = 'auth-msg error'; return; }
     if (mode === 'register') {
       msg.textContent = '注册成功！请登录'; msg.className = 'auth-msg success';
       setTimeout(function() { openAuthModal('login'); }, 1000);
+    } else if (mode === 'resetPassword') {
+      msg.textContent = '密码重置成功！请登录'; msg.className = 'auth-msg success';
+      setTimeout(function() { openAuthModal('login'); }, 1500);
     } else {
       API.setToken(data.token);
       currentUser = data.user;
@@ -218,7 +245,7 @@ function handleAuthSubmit() {
       document.getElementById('authPassword').value = '';
     }
   }).catch(function(e) {
-    btn.disabled = false; btn.textContent = mode === 'register' ? '注 册' : '登 录';
+    btn.disabled = false; btn.textContent = mode === 'register' ? '注 册' : (mode === 'resetPassword' ? '重 置' : '登 录');
     msg.textContent = '网络错误，请重试'; msg.className = 'auth-msg error';
   });
 }
