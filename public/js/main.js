@@ -485,6 +485,16 @@ function setupMarketSubmission() {
     prev.innerHTML = images.map(function(s, i) { return '<div class="img-preview-item"><img src="' + s + '"><button class="remove-img" data-idx="' + i + '">&times;</button></div>'; }).join('');
     prev.querySelectorAll('.remove-img').forEach(function(b) { b.addEventListener('click', function(e) { e.stopPropagation(); images.splice(parseInt(this.dataset.idx), 1); renderMI(); }); });
   }
+  // 价格自动加￥
+  var priceInput = document.getElementById('marketPrice');
+  if (priceInput) {
+    priceInput.addEventListener('blur', function() {
+      var v = this.value.trim();
+      if (v && v.charAt(0) !== '￥' && v.charAt(0) !== '¥') {
+        this.value = '￥' + v;
+      }
+    });
+  }
   var fBtn = document.getElementById('marketSubmitBtn');
   var fMsg = document.createElement('div');
   fMsg.style.cssText = 'text-align:center;padding:10px;border-radius:6px;font-size:13px;margin-top:12px;display:none;';
