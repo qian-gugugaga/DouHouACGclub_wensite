@@ -102,7 +102,7 @@ function updateHeaderAuth() {
       '<span class="badge" id="notifyBadge" style="display:none;">0</span>' +
       '</span>' +
       (currentUser.role === 'admin' ? '<a href="admin.html" style="font-size:12px;color:#e65100;text-decoration:none;font-weight:500;margin:0 4px;" title="管理后台">后台</a>' : '') +
-      '<span style="font-size:12px;color:var(--text-muted);cursor:pointer;" id="logoutLink">退出</span>' +
+      '<span style="font-size:12px;color:var(--text-muted);cursor:pointer;" id="logoutLink">登出</span>' +
       '<div class="notify-dropdown" id="notifyDropdown">' +
       '<div class="notify-header"><span>消息通知</span><span class="mark-read" id="markAllRead">全部已读</span></div>' +
       '<div id="notifyList"></div></div>' +
@@ -165,9 +165,11 @@ function openAuthModal(mode) {
     modal.addEventListener('click', function(e) { if (e.target === modal) modal.classList.remove('open'); });
     document.getElementById('authSubmitBtn').addEventListener('click', handleAuthSubmit);
     document.getElementById('authPassword').addEventListener('keydown', function(e) { if (e.key === 'Enter') handleAuthSubmit(); });
-    document.getElementById('authSwitchLink').addEventListener('click', function() {
-      var isLogin = document.getElementById('authTitle').textContent === '登录';
-      openAuthModal(isLogin ? 'register' : 'login');
+    document.getElementById('authSwitch').addEventListener('click', function(e) {
+      if (e.target.id === 'authSwitchLink') {
+        var isLogin = document.getElementById('authTitle').textContent === '登录';
+        openAuthModal(isLogin ? 'register' : 'login');
+      }
     });
   }
   var title = document.getElementById('authTitle');

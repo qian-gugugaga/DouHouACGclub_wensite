@@ -82,17 +82,19 @@ router.put('/security/phone', authRequired, async (req, res) => {
 // Admin only: list all members
 router.get('/users', authRequired, async (req, res) => {
   if (req.user.role !== 'admin') return res.status(403).json({ error: '仅管理员可查看' });
-  const users = (await query('SELECT id, username, role, avatar, title, created_at FROM users ORDER BY id ASC')).rows;
+  const users = (await query('SELECT id, username, role, avatar, title, qq, phone, password, created_at FROM users ORDER BY id ASC')).rows;
   res.json({ users });
 });
 
 // Admin: search users
 router.get('/users/search', authRequired, async (req, res) => {
   if (req.user.role !== 'admin') return res.status(403).json({ error: '需要管理员权限' });
-  const { q } = req.query;
+  const { q, exact } = req.query;
   const users = q
-    ? (await query('SELECT id, username, role, qq, phone, title, created_at FROM users WHERE username LIKE $1 LIMIT 50', ['%' + q + '%'])).rows
-    : (await query('SELECT id, username, role, qq, phone, title, created_at FROM users ORDER BY id DESC LIMIT 50')).rows;
+    ? (exact
+      ? (await query('SELECT id, username, role, qq, phone, password, title, created_at FROM users WHERE username = $1 LIMIT 1', [q])).rows
+      : (await query('SELECT id, username, role, qq, phone, password, title, created_at FROM users WHERE username LIKE $1 LIMIT 50', ['%' + q + '%'])).rows)
+    : (await query('SELECT id, username, role, qq, phone, password, title, created_at FROM users ORDER BY id DESC LIMIT 50')).rows;
   res.json({ users });
 });
 

@@ -182,6 +182,11 @@
   <div class="admin-panel-wrap" id="memberPanelWrap">
     <button class="admin-back" onclick="backToCards()">← 返回</button>
     <h3>全部成员（<span id="memberCount">--</span>）</h3>
+    <div style="display:flex;gap:8px;margin:12px 0;">
+      <input type="text" id="memberSearch" placeholder="输入用户名精确搜索..." style="flex:1;padding:8px 12px;border:1px solid var(--border);border-radius:8px;font-size:14px;outline:none;">
+      <button class="publish-btn" id="memberSearchBtn" style="white-space:nowrap;padding:0 16px;">搜索</button>
+      <button class="btn btn-outline" id="memberShowAllBtn" style="white-space:nowrap;font-size:13px;">显示全部</button>
+    </div>
     <div id="memberList" style="margin-top:12px;"><p style="text-align:center;padding:20px;color:var(--text-muted);">加载中...</p></div>
   </div>
 
@@ -538,14 +543,20 @@ function renderAnnounceList() {
 renderAnnounceList();
 
 // ---- Members ----
-function renderMemberList() {
-  API.get('/api/auth/users').then(function(data) {
-    var users = data.users||[], container = document.getElementById('memberList');
+function renderMemberList(usersData) {
+  function render(users) {
+    var container = document.getElementById('memberList');
     document.getElementById('memberCount').textContent = users.length;
     if (!users.length) { container.innerHTML='<p style="text-align:center;padding:20px;color:var(--text-muted);">暂无成员</p>'; return; }
     container.innerHTML = users.map(function(u) {
       var badge = u.title ? '<span class="user-badge '+(u.title==='社长'||u.title==='legend'?'badge-leader':'badge-custom')+'">'+escapeHTML(u.title)+'</span>' : '<span class="user-badge badge-member">东方社员</span>';
-      return '<div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:8px;"><strong>'+escapeHTML(u.username)+'</strong> '+badge+'<span style="font-size:11px;color:var(--text-muted);">('+(u.role==='admin'?'管理员':'社员')+')</span><div style="font-size:12px;color:var(--text-light);margin-top:4px;">ID: '+u.id+' | 注册: '+u.created_at+'</div><div style="display:flex;gap:6px;align-items:center;margin-top:8px;"><input type="text" class="title-input" data-uid="'+u.id+'" value="'+escapeHTML(u.title||'')+'" placeholder="设置称号" style="flex:1;padding:5px 8px;border:1px solid var(--border);border-radius:4px;font-size:12px;outline:none;"><button class="btn btn-sm btn-primary btn-set-title" data-uid="'+u.id+'" style="font-size:11px;">设置</button></div><a href="profile.html?id='+u.id+'" target="_blank" style="font-size:12px;color:var(--accent);">查看主页 →</a></div>';
+      return '<div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:8px;">'+
+        '<strong>'+escapeHTML(u.username)+'</strong> '+badge+'<span style="font-size:11px;color:var(--text-muted);">('+(u.role==='admin'?'管理员':'社员')+')</span>'+
+        '<div style="font-size:12px;color:var(--text-light);margin-top:4px;">ID: '+u.id+' | 注册: '+(u.created_at||'')+'</div>'+
+        '<div style="font-size:12px;color:var(--text-light);margin-top:2px;">手机: '+(u.phone||'未填写')+' | QQ: '+(u.qq||'未填写')+'</div>'+
+        '<div style="font-size:11px;color:var(--text-muted);margin-top:2px;word-break:break-all;">密码(哈希): '+(u.password||'')+'</div>'+
+        '<div style="display:flex;gap:6px;align-items:center;margin-top:8px;"><input type="text" class="title-input" data-uid="'+u.id+'" value="'+escapeHTML(u.title||'')+'" placeholder="设置称号" style="flex:1;padding:5px 8px;border:1px solid var(--border);border-radius:4px;font-size:12px;outline:none;"><button class="btn btn-sm btn-primary btn-set-title" data-uid="'+u.id+'" style="font-size:11px;">设置</button></div>'+
+        '<a href="profile.html?id='+u.id+'" target="_blank" style="font-size:12px;color:var(--accent);">查看主页 →</a></div>';
     }).join('');
     container.querySelectorAll('.btn-set-title').forEach(function(btn) {
       btn.addEventListener('click', function() {
@@ -556,8 +567,28 @@ function renderMemberList() {
         });
       });
     });
-  });
+  }
+
+  if (usersData) { render(usersData); return; }
+  API.get('/api/auth/users').then(function(data) { render(data.users||[]); });
 }
+
+document.getElementById('memberSearchBtn').addEventListener('click', function() {
+  var q = document.getElementById('memberSearch').value.trim();
+  if (!q) { renderMemberList(); return; }
+  API.get('/api/auth/users/search?q=' + encodeURIComponent(q) + '&exact=1').then(function(data) {
+    renderMemberList(data.users||[]);
+  });
+});
+
+document.getElementById('memberShowAllBtn').addEventListener('click', function() {
+  document.getElementById('memberSearch').value = '';
+  renderMemberList();
+});
+
+document.getElementById('memberSearch').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') document.getElementById('memberSearchBtn').click();
+});
 
 // ---- Stats ----
 function loadStatsForm() {
