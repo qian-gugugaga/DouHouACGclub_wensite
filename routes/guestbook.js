@@ -26,7 +26,10 @@ router.get('/', async (req, res) => {
       const p = parentMap[m.parent_id];
       replyTo = { id: p.id, title: p.title, username: p.username };
     }
-    return { ...m, images: JSON.parse(m.images || '[]'), replyTo };
+    const parsedImages = JSON.parse(m.images || '[]');
+    // List API: strip base64 image data, only return count (detail loads via /:id)
+    const { images, ...rest } = m;
+    return { ...rest, imageCount: parsedImages.length, replyTo };
   });
   res.json(output);
 });

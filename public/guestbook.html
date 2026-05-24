@@ -226,7 +226,7 @@ function loadThreads() {
         '<div style="display:flex;gap:16px;font-size:12px;color:var(--text-muted);align-items:center;">' +
         '<span>' + esc(t.author_name || '匿名') + '</span>' + (typeof titleBadge==='function' ? titleBadge(t.author_title) : '') + '<span>' + t.created_at + '</span>' +
         '<span style="color:var(--accent);font-weight:500;">' + replyCount + ' 回复</span>' +
-        (t.images && t.images.length > 0 ? '<img src="' + esc(t.images[0]) + '" style="width:60px;height:60px;border-radius:6px;object-fit:cover;margin-left:auto;flex-shrink:0;">' : '') +
+        (t.imageCount > 0 ? '<span style="margin-left:auto;font-size:20px;flex-shrink:0;" title="' + t.imageCount + '张图片">🖼️</span>' : '') +
         '<button class="like-btn" data-post="' + t.id + '" style="margin-left:auto;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span class="count">' + (t.likes || 0) + '</span></button>' +
         '</div></div></div></div>';
     }).join('');
