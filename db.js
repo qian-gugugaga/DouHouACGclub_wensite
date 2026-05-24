@@ -54,8 +54,9 @@ async function initDB() {
   // Guestbook
   await query(`CREATE TABLE IF NOT EXISTS guestbook_messages (
     id SERIAL PRIMARY KEY, author_id INTEGER, title TEXT,
-    text TEXT NOT NULL, parent_id INTEGER,
+    text TEXT NOT NULL, parent_id INTEGER, images TEXT DEFAULT '[]',
     created_at TIMESTAMP DEFAULT NOW())`);
+  await query(`ALTER TABLE guestbook_messages ADD COLUMN IF NOT EXISTS images TEXT DEFAULT '[]'`);
 
   // Notifications
   await query(`CREATE TABLE IF NOT EXISTS notifications (

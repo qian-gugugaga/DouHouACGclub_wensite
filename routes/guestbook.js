@@ -18,7 +18,7 @@ router.get('/', async (req, res) => {
       const parent = parentResult.rows[0];
       if (parent) replyTo = { id: parent.id, title: parent.title, username: parent.username };
     }
-    return { ...m, replyTo };
+    return { ...m, images: JSON.parse(m.images || '[]'), replyTo };
   }));
   res.json(output);
 });
@@ -34,17 +34,19 @@ router.get('/:id', async (req, res) => {
     "SELECT g.*, u.username as author_name, u.title as author_title, u.avatar FROM guestbook_messages g LEFT JOIN users u ON g.author_id = u.id WHERE g.parent_id = $1 ORDER BY g.created_at ASC",
     [req.params.id]
   );
-  res.json({ thread, replies: repliesResult.rows });
+  res.json({ thread: { ...thread, images: JSON.parse(thread.images || '[]') }, replies: repliesResult.rows.map(r => ({ ...r, images: JSON.parse(r.images || '[]') })) });
 });
 
 router.post('/', authRequired, async (req, res) => {
-  const { title, text, parentId } = req.body;
+  const { title, text, parentId, images } = req.body;
   if (!text || !text.trim()) return res.status(400).json({ error: '请输入内容' });
   if (!parentId && (!title || !title.trim())) return res.status(400).json({ error: '请输入标题' });
+  const imgs = Array.isArray(images) ? images : [];
+  if (parentId && imgs.length > 1) return res.status(400).json({ error: '回复仅可携带一张图片' });
 
   const result = await query(
-    'INSERT INTO guestbook_messages (author_id, title, text, parent_id) VALUES ($1, $2, $3, $4) RETURNING id',
-    [req.user.id, title ? title.trim() : null, text.trim(), parentId || null]
+    'INSERT INTO guestbook_messages (author_id, title, text, parent_id, images) VALUES ($1, $2, $3, $4, $5) RETURNING id',
+    [req.user.id, title ? title.trim() : null, text.trim(), parentId || null, JSON.stringify(imgs)]
   );
   const newId = result.rows[0].id;
 

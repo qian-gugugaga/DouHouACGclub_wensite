@@ -1,6 +1,6 @@
 {
   "name": "dfdm-club",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "东方动漫社 · 神秘据点",
   "main": "server.js",
   "scripts": {
