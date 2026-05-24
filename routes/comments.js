@@ -7,7 +7,7 @@ const router = express.Router();
 router.get('/:targetType/:targetId', async (req, res) => {
   const { targetType, targetId } = req.params;
   const result = await query(
-    `SELECT c.*, u.username as author_name, u.title as author_title
+    `SELECT c.*, u.username as author_name, u.title as author_title, u.avatar
      FROM comments c LEFT JOIN users u ON c.author_id = u.id
      WHERE c.target_type = $1 AND c.target_id = $2
      ORDER BY c.created_at ASC`,

@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.get('/', async (req, res) => {
   const result = await query(
-    "SELECT g.*, u.username as author_name, u.title as author_title, (SELECT COUNT(*) FROM post_likes WHERE post_id = g.id) as likes FROM guestbook_messages g LEFT JOIN users u ON g.author_id = u.id ORDER BY g.created_at DESC"
+    "SELECT g.*, u.username as author_name, u.title as author_title, u.avatar, (SELECT COUNT(*) FROM post_likes WHERE post_id = g.id) as likes FROM guestbook_messages g LEFT JOIN users u ON g.author_id = u.id ORDER BY g.created_at DESC"
   );
   const messages = result.rows;
   const output = await Promise.all(messages.map(async (m) => {
@@ -25,13 +25,13 @@ router.get('/', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
   const threadResult = await query(
-    "SELECT g.*, u.username as author_name, u.title as author_title FROM guestbook_messages g LEFT JOIN users u ON g.author_id = u.id WHERE g.id = $1",
+    "SELECT g.*, u.username as author_name, u.title as author_title, u.avatar FROM guestbook_messages g LEFT JOIN users u ON g.author_id = u.id WHERE g.id = $1",
     [req.params.id]
   );
   const thread = threadResult.rows[0];
   if (!thread) return res.status(404).json({ error: '帖子不存在' });
   const repliesResult = await query(
-    "SELECT g.*, u.username as author_name, u.title as author_title FROM guestbook_messages g LEFT JOIN users u ON g.author_id = u.id WHERE g.parent_id = $1 ORDER BY g.created_at ASC",
+    "SELECT g.*, u.username as author_name, u.title as author_title, u.avatar FROM guestbook_messages g LEFT JOIN users u ON g.author_id = u.id WHERE g.parent_id = $1 ORDER BY g.created_at ASC",
     [req.params.id]
   );
   res.json({ thread, replies: repliesResult.rows });

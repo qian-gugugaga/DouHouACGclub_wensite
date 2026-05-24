@@ -617,12 +617,16 @@ function loadCommentList(targetType, targetId, listId) {
       return;
     }
     list.innerHTML = comments.map(function(c) {
-      var av = 'background:linear-gradient(135deg,' + avatarColorsC[(c.author_id || 0) % avatarColorsC.length] + ');';
+      var size = 28; var fontSize = 12;
+      var avDefault = 'background:linear-gradient(135deg,' + avatarColorsC[(c.author_id || 0) % avatarColorsC.length] + ');';
+      var avatarHTML = c.avatar
+        ? '<img src="' + escapeHTML(c.avatar) + '" style="width:' + size + 'px;height:' + size + 'px;border-radius:50%;object-fit:cover;flex-shrink:0;">'
+        : '<div style="' + avDefault + ';width:' + size + 'px;height:' + size + 'px;font-size:' + fontSize + 'px;flex-shrink:0;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;">' + escapeHTML((c.author_name || '?').charAt(0)) + '</div>';
       var indent = c.parent_id ? 'margin-left:36px;' : '';
       var replyTo = c.parent_id ? comments.find(function(x) { return x.id === c.parent_id; }) : null;
       var replyToHTML = replyTo ? '<div style="font-size:11px;color:var(--accent);margin-bottom:2px;">↳ 回复 @' + escapeHTML(replyTo.author_name || '匿名') + '</div>' : '';
       return '<div class="comment-item" style="display:flex;gap:8px;padding:8px 0;border-bottom:1px solid #f5f5f5;' + indent + '" data-comment-id="' + c.id + '" data-author="' + escapeHTML(c.author_name || '匿名') + '">' +
-        '<div class="avatar" style="' + av + ';width:28px;height:28px;font-size:12px;flex-shrink:0;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;">' + escapeHTML((c.author_name || '?').charAt(0)) + '</div>' +
+        avatarHTML +
         '<div style="flex:1;">' +
         '<div style="font-size:12px;font-weight:600;">' + escapeHTML(c.author_name || '匿名') + (typeof titleBadge==='function' ? titleBadge(c.author_title) : '') +
         '<span style="font-weight:400;color:var(--text-muted);margin-left:6px;font-size:10px;">' + c.created_at + '</span></div>' +
