@@ -197,7 +197,12 @@ var allMessagesCache = [];
 
 function loadThreads() {
   return API.get('/api/guestbook').then(function(data) {
-    if (!Array.isArray(data)) { console.error('guestbook data not array:', data); return; }
+    if (!Array.isArray(data)) {
+      console.error('guestbook data not array:', data);
+      var list = document.getElementById('threadList');
+      if (list) list.innerHTML = '<p style="text-align:center;padding:24px;color:#c62828;">数据异常，请刷新重试~</p>';
+      return;
+    }
     allMessagesCache = data;
     var threads = data.filter(function(m) { return !m.parent_id; });
     var list = document.getElementById('threadList');
@@ -401,7 +406,11 @@ var openThreadId = urlParams.get('thread');
 if (openThreadId) { setTimeout(function() { openThread(parseInt(openThreadId)); }, 500); }
 
 window.openThread = openThread;
-loadThreads();
+loadThreads().catch(function(err) {
+  console.error('loadThreads failed:', err);
+  var list = document.getElementById('threadList');
+  if (list) list.innerHTML = '<p style="text-align:center;padding:24px;color:#c62828;">加载失败，请检查网络后刷新重试~</p>';
+});
 </script>
 </body>
 </html>

@@ -8,18 +8,26 @@ router.get('/', async (req, res) => {
     "SELECT g.*, u.username as author_name, u.title as author_title, u.avatar, (SELECT COUNT(*) FROM post_likes WHERE post_id = g.id) as likes FROM guestbook_messages g LEFT JOIN users u ON g.author_id = u.id ORDER BY g.created_at DESC"
   );
   const messages = result.rows;
-  const output = await Promise.all(messages.map(async (m) => {
+
+  // Batch-fetch parent info for replies (avoid N+1 queries)
+  const parentIds = [...new Set(messages.filter(m => m.parent_id).map(m => m.parent_id))];
+  const parentMap = {};
+  if (parentIds.length > 0) {
+    const parents = await query(
+      'SELECT g.id, g.title, u.username FROM guestbook_messages g LEFT JOIN users u ON g.author_id = u.id WHERE g.id = ANY($1)',
+      [parentIds]
+    );
+    parents.rows.forEach(p => { parentMap[p.id] = p; });
+  }
+
+  const output = messages.map(m => {
     let replyTo = null;
-    if (m.parent_id) {
-      const parentResult = await query(
-        'SELECT g.id, g.title, u.username FROM guestbook_messages g LEFT JOIN users u ON g.author_id = u.id WHERE g.id = $1',
-        [m.parent_id]
-      );
-      const parent = parentResult.rows[0];
-      if (parent) replyTo = { id: parent.id, title: parent.title, username: parent.username };
+    if (m.parent_id && parentMap[m.parent_id]) {
+      const p = parentMap[m.parent_id];
+      replyTo = { id: p.id, title: p.title, username: p.username };
     }
     return { ...m, images: JSON.parse(m.images || '[]'), replyTo };
-  }));
+  });
   res.json(output);
 });
 
