@@ -27,18 +27,6 @@ async function initDB() {
   // Set Beijing timezone for this session
   await query("SET timezone = 'Asia/Shanghai'");
 
-  // One-time: migrate existing UTC timestamps to Beijing time (UTC+8)
-  const migrationDone = (await query("SELECT value FROM site_stats WHERE key = 'tz_migrated'")).rows[0];
-  if (!migrationDone) {
-    const tables = ['users', 'sessions', 'monthly_issues', 'fanwork_submissions', 'market_items',
-      'guestbook_messages', 'notifications', 'comments', 'activities', 'post_likes', 'announcements', 'site_stats'];
-    for (const t of tables) {
-      await query(`UPDATE ${t} SET created_at = created_at + INTERVAL '8 hours' WHERE created_at IS NOT NULL`);
-    }
-    await query("INSERT INTO site_stats (key, value) VALUES ('tz_migrated', '1') ON CONFLICT (key) DO NOTHING");
-    console.log('Migrated existing timestamps to Beijing time (UTC+8)');
-  }
-
   // Users
   await query(`CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY, username TEXT UNIQUE NOT NULL,
@@ -117,6 +105,22 @@ async function initDB() {
   const statsExist = await query('SELECT id FROM site_stats LIMIT 1');
   if (statsExist.rows.length === 0) {
     await query("INSERT INTO site_stats (key, value) VALUES ('members', '328'), ('works', '1247'), ('events', '56'), ('months', '12')");
+  }
+
+  // One-time: migrate existing UTC timestamps to Beijing time (UTC+8)
+  try {
+    const migrationDone = (await query("SELECT value FROM site_stats WHERE key = 'tz_migrated'")).rows[0];
+    if (!migrationDone) {
+      const tables = ['users', 'sessions', 'monthly_issues', 'fanwork_submissions', 'market_items',
+        'guestbook_messages', 'notifications', 'comments', 'activities', 'post_likes', 'announcements'];
+      for (const t of tables) {
+        await query(`UPDATE ${t} SET created_at = created_at + INTERVAL '8 hours' WHERE created_at IS NOT NULL`);
+      }
+      await query("INSERT INTO site_stats (key, value) VALUES ('tz_migrated', '1') ON CONFLICT (key) DO NOTHING");
+      console.log('Migrated existing timestamps to Beijing time (UTC+8)');
+    }
+  } catch (e) {
+    console.error('Timezone migration failed (non-fatal):', e.message);
   }
 
   // Admin account
