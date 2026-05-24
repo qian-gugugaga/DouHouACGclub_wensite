@@ -655,12 +655,40 @@ function postComment(targetType, targetId, inputId, listId) {
   if (!text) return;
   if (!API.token) { openAuthModal('login'); return; }
   var parentId = input.dataset.replyTo ? parseInt(input.dataset.replyTo) : null;
+  var btn = document.getElementById(targetType === 'fanwork' ? 'fanworkCommentBtn' : 'marketCommentBtn');
+  var origText = btn ? btn.textContent : '';
+  if (btn) { btn.disabled = true; btn.textContent = '发送中...'; }
   API.post('/api/comments', { targetType: targetType, targetId: targetId, text: text, parentId: parentId }).then(function(data) {
-    if (data.error) return;
+    if (btn) { btn.disabled = false; btn.textContent = origText; }
+    if (data.error) {
+      var msgEl = document.getElementById((targetType === 'fanwork' ? 'fanwork' : 'market') + 'CommentMsg');
+      if (!msgEl) {
+        msgEl = document.createElement('div');
+        msgEl.id = (targetType === 'fanwork' ? 'fanwork' : 'market') + 'CommentMsg';
+        msgEl.style.cssText = 'font-size:12px;margin-top:6px;';
+        if (btn) btn.parentNode.insertBefore(msgEl, btn.nextSibling);
+      }
+      msgEl.textContent = data.error;
+      msgEl.style.color = '#c62828';
+      return;
+    }
     input.value = '';
     delete input.dataset.replyTo;
     input.placeholder = '写下你的评论...';
+    var msgEl = document.getElementById((targetType === 'fanwork' ? 'fanwork' : 'market') + 'CommentMsg');
+    if (msgEl) { msgEl.textContent = ''; }
     loadCommentList(targetType, targetId, listId);
+  }).catch(function() {
+    if (btn) { btn.disabled = false; btn.textContent = origText; }
+    var msgEl = document.getElementById((targetType === 'fanwork' ? 'fanwork' : 'market') + 'CommentMsg');
+    if (!msgEl) {
+      msgEl = document.createElement('div');
+      msgEl.id = (targetType === 'fanwork' ? 'fanwork' : 'market') + 'CommentMsg';
+      msgEl.style.cssText = 'font-size:12px;margin-top:6px;';
+      if (btn) btn.parentNode.insertBefore(msgEl, btn.nextSibling);
+    }
+    msgEl.textContent = '网络错误，请重试';
+    msgEl.style.color = '#c62828';
   });
 }
 
@@ -672,6 +700,18 @@ document.addEventListener('DOMContentLoaded', function() {
       var modal = document.getElementById('contentModal');
       if (!modal || !modal._targetId) return;
       postComment('fanwork', modal._targetId, 'fanworkCommentInput', 'fanworkCommentList');
+    });
+  }
+  // Enter key to submit fanwork comment
+  var fanworkInput = document.getElementById('fanworkCommentInput');
+  if (fanworkInput) {
+    fanworkInput.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        var modal = document.getElementById('contentModal');
+        if (!modal || !modal._targetId) return;
+        postComment('fanwork', modal._targetId, 'fanworkCommentInput', 'fanworkCommentList');
+      }
     });
   }
   // Market comment form (wired in market.html DOM ready)
