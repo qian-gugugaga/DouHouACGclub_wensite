@@ -27,9 +27,10 @@ router.get('/', async (req, res) => {
       replyTo = { id: p.id, title: p.title, username: p.username };
     }
     const parsedImages = JSON.parse(m.images || '[]');
-    // List API: strip base64 image data, only return count (detail loads via /:id)
+    // Only include URL-based images (not base64) to keep response lean
+    const displayableImages = parsedImages.filter(img => img && !img.startsWith('data:'));
     const { images, ...rest } = m;
-    return { ...rest, imageCount: parsedImages.length, replyTo };
+    return { ...rest, images: displayableImages, imageCount: parsedImages.length, replyTo };
   });
   res.json(output);
 });
