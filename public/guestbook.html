@@ -361,17 +361,26 @@ document.getElementById('threadForm').addEventListener('submit', function(e) {
   if (!title) { alert('请输入标题'); return; }
   if (!text) { alert('请输入内容'); return; }
   var btn = this.querySelector('button[type=submit]');
-  btn.disabled = true; btn.textContent = '发布中...';
-  API.post('/api/guestbook', { title: title, text: text, images: threadImages.slice() }).then(function(d) {
-    if (d.error) { alert(d.error); btn.disabled = false; btn.textContent = '发布帖子'; return; }
-    document.getElementById('threadTitle').value = '';
-    document.getElementById('threadText').value = '';
-    document.getElementById('threadForm').style.display = 'none';
-    document.getElementById('btnNewThread').style.display = '';
-    threadImages = []; renderThreadImgs();
-    btn.disabled = false; btn.textContent = '发布帖子';
-    loadThreads();
-  });
+  btn.disabled = true; btn.textContent = '上传中...';
+  var imgs = threadImages.slice();
+  var doPost = function(urls) {
+    btn.textContent = '发布中...';
+    API.post('/api/guestbook', { title: title, text: text, images: urls }).then(function(d) {
+      if (d.error) { alert(d.error); btn.disabled = false; btn.textContent = '发布帖子'; return; }
+      document.getElementById('threadTitle').value = '';
+      document.getElementById('threadText').value = '';
+      document.getElementById('threadForm').style.display = 'none';
+      document.getElementById('btnNewThread').style.display = '';
+      threadImages = []; renderThreadImgs();
+      btn.disabled = false; btn.textContent = '发布帖子';
+      loadThreads();
+    }).catch(function() { btn.disabled = false; btn.textContent = '发布帖子'; });
+  };
+  if (imgs.length > 0) {
+    API.post('/api/upload', { images: imgs }).then(function(r) { doPost(r.urls || []); }).catch(function() { btn.disabled = false; btn.textContent = '发布帖子'; });
+  } else {
+    doPost([]);
+  }
 });
 
 // Reply form submit
@@ -383,21 +392,30 @@ document.getElementById('replyForm').addEventListener('submit', function(e) {
   var parentId = (window._replyTarget && window._replyTarget.id) ? window._replyTarget.id : parseInt(threadModal.dataset.threadId);
   window._replyTarget = null;
   var btn = this.querySelector('button[type=submit]');
-  btn.disabled = true; btn.textContent = '回复中...';
-  API.post('/api/guestbook', { text: text, parentId: parentId, images: replyImage ? [replyImage] : [] }).then(function(d) {
-    if (d.error) { alert(d.error); btn.disabled = false; btn.textContent = '回复'; return; }
-    document.getElementById('replyText').value = '';
-    replyImage = null; renderReplyImg();
-    var indicator = document.getElementById('replyIndicator');
-    if (indicator) indicator.remove();
-    btn.disabled = false; btn.textContent = '回复';
-    setTimeout(function() {
-      loadThreads().then(function() { openThread(parseInt(threadModal.dataset.threadId)); });
-    }, 300);
-  }).catch(function(e) {
-    console.error('reply error:', e);
-    btn.disabled = false; btn.textContent = '回复';
-  });
+  btn.disabled = true; btn.textContent = '上传中...';
+  var img = replyImage;
+  var doReply = function(urls) {
+    btn.textContent = '回复中...';
+    API.post('/api/guestbook', { text: text, parentId: parentId, images: urls }).then(function(d) {
+      if (d.error) { alert(d.error); btn.disabled = false; btn.textContent = '回复'; return; }
+      document.getElementById('replyText').value = '';
+      replyImage = null; renderReplyImg();
+      var indicator = document.getElementById('replyIndicator');
+      if (indicator) indicator.remove();
+      btn.disabled = false; btn.textContent = '回复';
+      setTimeout(function() {
+        loadThreads().then(function() { openThread(parseInt(threadModal.dataset.threadId)); });
+      }, 300);
+    }).catch(function(e) {
+      console.error('reply error:', e);
+      btn.disabled = false; btn.textContent = '回复';
+    });
+  };
+  if (img) {
+    API.post('/api/upload', { images: [img] }).then(function(r) { doReply(r.urls || []); }).catch(function() { btn.disabled = false; btn.textContent = '回复'; });
+  } else {
+    doReply([]);
+  }
 });
 
 // Open thread from notification

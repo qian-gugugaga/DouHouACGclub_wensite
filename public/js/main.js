@@ -442,8 +442,15 @@ function setupSubmissionModal() {
       if (!t2) { sm('请选择作品类型', 'error'); return; }
       if (submissionImages.length === 0) { sm('请上传图片', 'error'); return; }
       if (!text) { sm('请输入正文', 'error'); return; }
-      this.disabled = true; this.textContent = '提交中...'; var self = this;
-      API.post('/api/fanworks', { tag1: t1.textContent, tag2: t2.textContent, images: submissionImages.slice(), text: text }).then(function(d) {
+      this.disabled = true; this.textContent = '上传图片中...'; var self = this;
+      // Upload images first, get URLs instead of storing base64
+      API.post('/api/upload', { images: submissionImages.slice() }).then(function(uploadRes) {
+        if (uploadRes.error) { sm(uploadRes.error, 'error'); self.disabled = false; self.textContent = '提交投稿'; return; }
+        var urls = uploadRes.urls || [];
+        self.textContent = '提交中...';
+        return API.post('/api/fanworks', { tag1: t1.textContent, tag2: t2.textContent, images: urls, text: text });
+      }).then(function(d) {
+        if (!d) return;
         if (d.error) { sm(d.error, 'error'); self.disabled = false; self.textContent = '提交投稿'; return; }
         sm('投稿已提交~', 'success'); submissionImages = []; renderSI();
         submitModal.querySelectorAll('.tag-option').forEach(function(o) { o.classList.remove('selected'); });
@@ -509,8 +516,15 @@ function setupMarketSubmission() {
       if (!price.value.trim()) { sm('请输入价格', 'error'); return; }
       if (!tag) { sm('请选择类型', 'error'); return; }
       if (images.length === 0) { sm('请上传图片', 'error'); return; }
-      this.disabled = true; this.textContent = '提交中...'; var self = this;
-      API.post('/api/market', { title: title.value.trim(), price: price.value.trim(), qq: qq.value.trim(), tag: tag.textContent, ip: ip.value.trim(), images: images.slice(), text: text.value.trim() }).then(function(d) {
+      this.disabled = true; this.textContent = '上传图片中...'; var self = this;
+      // Upload images first, get URLs instead of storing base64
+      API.post('/api/upload', { images: images.slice() }).then(function(uploadRes) {
+        if (uploadRes.error) { sm(uploadRes.error, 'error'); self.disabled = false; self.textContent = '提交发布'; return; }
+        var urls = uploadRes.urls || [];
+        self.textContent = '提交中...';
+        return API.post('/api/market', { title: title.value.trim(), price: price.value.trim(), qq: qq.value.trim(), tag: tag.textContent, ip: ip.value.trim(), images: urls, text: text.value.trim() });
+      }).then(function(d) {
+        if (!d) return;
         if (d.error) { sm(d.error, 'error'); self.disabled = false; self.textContent = '提交发布'; return; }
         sm('已提交~', 'success'); images = []; renderMI();
         modal.querySelectorAll('.tag-option').forEach(function(o) { o.classList.remove('selected'); });
