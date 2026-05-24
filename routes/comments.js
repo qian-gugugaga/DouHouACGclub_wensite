@@ -30,8 +30,9 @@ router.post('/', authRequired, async (req, res) => {
 
   // Notify the target author (only fanwork or market supported)
   const targetTable = targetType === 'fanwork' ? 'fanwork_submissions' : 'market_items';
+  const targetCols = targetType === 'fanwork' ? 'author_id, text' : 'author_id, text, title';
   const targetResult = await query(
-    `SELECT author_id, text, title FROM ${targetTable} WHERE id = $1`,
+    `SELECT ${targetCols} FROM ${targetTable} WHERE id = $1`,
     [targetId]
   );
   const target = targetResult.rows[0];

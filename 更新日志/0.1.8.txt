@@ -1,0 +1,8 @@
+版本 0.1.8 更新日志
+====================
+
+【修复】
+1. 创作广场评论 500 内部错误
+   - comments.js 查询 fanwork_submissions 时误选了不存在的 title 列
+   - fanwork_submissions 表无 title 字段（只有 market_items 有）
+   - 改为按 targetType 动态选择查询列
